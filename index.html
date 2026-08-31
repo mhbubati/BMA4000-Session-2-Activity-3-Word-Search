@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Word Search – Sessions 1 & 2</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --primary: #003366; --green1: #2ECC71; --green2: #27AE60; --blue1: #2980B9; --blue2: #1A5276; }
+        body {
+            font-family: 'Segoe UI','Roboto',Arial,sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 400% 400%; animation: gradShift 20s ease infinite;
+            min-height: 100vh; padding: 40px 20px; position: relative; overflow-x: hidden;
+        }
+        @keyframes gradShift { 0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%} }
+
+        .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: hidden; }
+        .particle { position: absolute; width: 4px; height: 4px; background: rgba(255,255,255,0.3); border-radius: 50%; animation: floatP linear infinite; }
+        @keyframes floatP { 0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:1;transform:translateY(90vh) scale(1)}90%{opacity:1}100%{transform:translateY(-100px) scale(0);opacity:0} }
+
+        .top-progress { position: fixed; top: 0; left: 0; width: 100%; height: 4px; background: rgba(255,255,255,0.2); z-index: 1000; }
+        .top-progress .fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--primary), #2980B9); transition: width 0.3s; box-shadow: 0 0 10px rgba(41,128,185,0.5); }
+
+        .sound-toggle {
+            position: fixed; top: 20px; right: 20px; background: var(--primary); color: white;
+            border: none; padding: 12px 18px; border-radius: 30px; cursor: pointer;
+            font-size: 14px; font-weight: 600; z-index: 1001; box-shadow: 0 4px 12px rgba(0,51,102,0.3); transition: all 0.3s;
+        }
+        .sound-toggle:hover { background: #002244; transform: scale(1.05); }
+
+        .container {
+            max-width: 1000px; width: 100%; background: rgba(255,255,255,0.98);
+            border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 44px 48px; border-top: 6px solid var(--primary);
+            margin: 0 auto; position: relative; z-index: 10; backdrop-filter: blur(10px);
+        }
+
+        .header { border-bottom: 2px solid var(--primary); padding-bottom: 18px; margin-bottom: 24px; }
+        .header .module-code { font-size: 14px; font-weight: 700; letter-spacing: 2px; color: var(--primary); text-transform: uppercase; }
+        .header .session-title { font-size: 26px; font-weight: 800; color: var(--primary); margin-top: 6px; }
+        .header .activity-type { font-size: 16px; color: #666; margin-top: 4px; }
+
+        h1 { font-size: 30px; color: var(--primary); margin-bottom: 8px; }
+        .subtitle { font-size: 17px; color: #555; margin-bottom: 24px; padding: 12px 20px; background: #f5f7fa; border-left: 4px solid var(--primary); border-radius: 6px; }
+
+        .why-matters {
+            background: linear-gradient(135deg, #eaf2f8, #e8f0fe); border-radius: 12px;
+            padding: 22px 26px; margin-bottom: 24px; border-left: 4px solid var(--primary);
+        }
+        .why-matters h3 { color: var(--primary); font-size: 18px; margin-bottom: 10px; }
+        .why-matters p { font-size: 15px; color: #333; line-height: 1.8; margin-bottom: 8px; }
+        .why-matters ul { padding-left: 22px; margin-top: 6px; }
+        .why-matters ul li { list-style-type: "✅ "; padding-left: 6px; line-height: 1.9; font-size: 15px; color: #333; }
+        .why-matters ul li strong { color: var(--primary); }
+        .why-matters .closing { font-size: 15px; color: var(--primary); font-weight: 600; margin-top: 10px; font-style: italic; }
+
+        /* Instructions */
+        .instructions { background: #f5f7fa; border-radius: 12px; padding: 20px 24px; margin-bottom: 24px; border-left: 4px solid var(--primary); }
+        .instructions h3 { color: var(--primary); font-size: 17px; margin-bottom: 12px; }
+        .method { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 14px; padding: 14px 16px; background: #fff; border-radius: 10px; border: 1px solid #e8ecf1; }
+        .method:last-of-type { margin-bottom: 0; }
+        .method .m-icon { font-size: 30px; flex-shrink: 0; line-height: 1; }
+        .method .m-body { flex: 1; }
+        .method .m-title { font-size: 15px; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+        .method .m-steps { font-size: 14px; color: #444; line-height: 1.7; }
+        .method .m-steps strong { color: var(--primary); }
+        .method .m-badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 20px; margin-left: 6px; vertical-align: middle; }
+        .method .m-badge.phone { background: #E8F8F0; color: #1a7a4a; }
+        .method .m-badge.desktop { background: #EAF2F8; color: var(--blue2); }
+        .rules { margin-top: 14px; padding: 12px 16px; background: linear-gradient(135deg, #eaf2f8, #e8f0fe); border-radius: 10px; font-size: 14px; color: #333; line-height: 1.7; }
+        .rules strong { color: var(--primary); }
+
+        /* Top bar */
+        .top-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 18px; padding: 12px 18px; background: #f5f7fa; border-radius: 10px; }
+        .timer { font-size: 22px; font-weight: 700; color: var(--primary); font-variant-numeric: tabular-nums; }
+        .hint-btn { background: var(--primary); color: #fff; border: none; padding: 10px 24px; font-size: 14px; font-weight: 700; border-radius: 30px; cursor: pointer; transition: all 0.2s; }
+        .hint-btn:hover:not(:disabled) { background: var(--blue2); transform: translateY(-1px); }
+        .hint-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .hint-label { font-size: 12px; color: #888; margin-right: 6px; }
+
+        /* Selection indicator */
+        .sel-indicator { display: none; text-align: center; padding: 10px 18px; margin-bottom: 14px; background: linear-gradient(135deg, var(--primary), var(--blue2)); color: #fff; border-radius: 10px; font-size: 15px; font-weight: 600; animation: slideDown 0.3s ease; }
+        .sel-indicator.show { display: block; }
+        @keyframes slideDown { from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)} }
+
+        /* Game layout */
+        .game-area { display: flex; flex-wrap: wrap; gap: 24px; }
+        .grid-wrap { flex: 2; min-width: 300px; overflow-x: auto; }
+        .grid { display: inline-grid; gap: 2px; user-select: none; -webkit-user-select: none; touch-action: manipulation; }
+        .cell {
+            width: 34px; height: 34px; display: flex; justify-content: center; align-items: center;
+            font-size: 15px; font-weight: 700; color: var(--primary); background: #f8f9fa;
+            border: 1px solid #dde1e6; border-radius: 4px; cursor: pointer;
+            text-transform: uppercase; transition: all 0.5s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .cell:hover:not(.faded) { background: #e8ecf1; }
+        .cell.selecting { background: #F1C40F !important; color: #333 !important; transform: scale(1.06) !important; border-color: #F1C40F !important; text-shadow: none !important; box-shadow: 0 0 0 2px rgba(241,196,15,0.4) !important; z-index: 2; position: relative; transition: all 0.12s !important; }
+        .cell.first-tap { background: #F1C40F !important; color: #333 !important; transform: scale(1.1) !important; box-shadow: 0 0 0 3px rgba(241,196,15,0.6) !important; border-color: #F1C40F !important; text-shadow: none !important; z-index: 2; position: relative; transition: all 0.15s !important; }
+        .cell.hint-flash { animation: hintFlash 0.35s ease 5; }
+        @keyframes hintFlash { 0%,100%{background:#f8f9fa}50%{background:#F1C40F;transform:scale(1.1)} }
+
+        /* Found colours - green gradient + blue tones */
+        .cell.found { color: #fff !important; cursor: pointer; border-color: transparent; text-shadow: 0 1px 1px rgba(0,0,0,0.2); }
+        .cell.c0{background:#2ECC71}.cell.c1{background:#27AE60}.cell.c2{background:#1E8449}.cell.c3{background:#196F3D}
+        .cell.c4{background:#2980B9}.cell.c5{background:#2471A3}.cell.c6{background:#1A5276}.cell.c7{background:#154360}
+        .cell.c8{background:#1ABC9C}.cell.c9{background:#17A589}.cell.c10{background:#148F77}.cell.c11{background:#0E6655}
+        .cell.c12{background:#3498DB}.cell.c13{background:#2E86C1}.cell.c14{background:#2874A6}.cell.c15{background:#21618C}
+
+        /* Reveal mode */
+        .cell.faded { opacity: 0 !important; transform: scale(0.5) !important; pointer-events: none !important; border-color: transparent !important; background: transparent !important; color: transparent !important; }
+        .cell.revealed { transform: scale(1.05); box-shadow: 0 2px 8px rgba(0,0,0,0.15); border-radius: 4px; }
+
+        .reveal-label { display: none; text-align: center; margin-top: 14px; padding: 12px 18px; background: linear-gradient(135deg, #e8f8f0, #eaf2f8); border-radius: 10px; font-size: 15px; font-weight: 600; color: var(--primary); border: 1px solid var(--primary); animation: fadeSlide 0.6s ease; }
+        .reveal-label.show { display: block; }
+        @keyframes fadeSlide { from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)} }
+
+        /* Word bank */
+        .word-bank { flex: 1; min-width: 200px; background: #f8f9fa; border-radius: 12px; padding: 18px; border: 1px solid #dde1e6; max-height: 520px; overflow-y: auto; }
+        .word-bank h3 { font-size: 16px; color: var(--primary); margin-bottom: 12px; text-align: center; }
+        .word-item { display: flex; align-items: center; gap: 8px; padding: 8px 12px; margin-bottom: 5px; border-radius: 8px; font-size: 14px; font-weight: 600; color: var(--primary); background: #fff; border: 1px solid #e8ecf1; transition: all 0.25s; }
+        .word-item.found { color: #fff; text-decoration: line-through; border-color: transparent; }
+        .word-item.found.wc0{background:#2ECC71}.word-item.found.wc1{background:#27AE60}.word-item.found.wc2{background:#1E8449}.word-item.found.wc3{background:#196F3D}
+        .word-item.found.wc4{background:#2980B9}.word-item.found.wc5{background:#2471A3}.word-item.found.wc6{background:#1A5276}.word-item.found.wc7{background:#154360}
+        .word-item.found.wc8{background:#1ABC9C}.word-item.found.wc9{background:#17A589}.word-item.found.wc10{background:#148F77}.word-item.found.wc11{background:#0E6655}
+        .word-item.found.wc12{background:#3498DB}.word-item.found.wc13{background:#2E86C1}.word-item.found.wc14{background:#2874A6}.word-item.found.wc15{background:#21618C}
+        .word-item .icon { font-size: 16px; }
+        .word-item .txt { flex: 1; }
+        .word-item .chk { opacity: 0; transition: opacity 0.2s; }
+        .word-item.found .chk { opacity: 1; }
+
+        /* Progress */
+        .progress-row { display: flex; align-items: center; gap: 12px; margin: 16px 0; padding: 12px 18px; background: #f5f7fa; border-radius: 10px; }
+        .progress-row .ptxt { font-size: 15px; font-weight: 600; color: var(--primary); white-space: nowrap; }
+        .progress-row .ptxt strong { font-size: 20px; }
+        .pbar { flex: 1; height: 10px; background: #dde1e6; border-radius: 20px; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
+        .pbar .pfill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--green1), var(--blue1)); border-radius: 20px; transition: width 0.4s; position: relative; overflow: hidden; }
+        .pbar .pfill::after { content:''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); animation: shimmer 2s infinite; }
+        @keyframes shimmer { 0%{transform:translateX(-100%)}100%{transform:translateX(100%)} }
+
+        .msg { margin-top: 14px; padding: 12px 18px; border-radius: 10px; display: none; font-weight: 600; font-size: 15px; text-align: center; }
+        .msg.show { display: block; }
+        .msg.ok { background: #e8f8f0; color: #1a7a4a; border-left: 3px solid var(--green1); }
+        .msg.err { background: #fde8e8; color: #8a2a2a; border-left: 3px solid #E74C3C; }
+
+        .btn-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 14px; }
+        .btn { padding: 12px 30px; font-size: 16px; font-weight: 700; border: none; border-radius: 30px; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 10px; }
+        .btn-p { background: var(--primary); color: #fff; }
+        .btn-p:hover { background: var(--blue2); transform: translateY(-1px); }
+        .btn-s { background: #e8ecf1; color: var(--primary); }
+        .btn-s:hover { background: #dde1e6; transform: translateY(-1px); }
+
+        /* Inline Feedback */
+        .feedback-section { display: none; margin-top: 24px; animation: slideUp 0.5s ease; }
+        .feedback-section.show { display: block; }
+        @keyframes slideUp { from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)} }
+        .feedback-section h3 { color: var(--primary); font-size: 20px; margin-bottom: 14px; }
+        .feedback-table { width: 100%; border-collapse: collapse; font-size: 14px; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .feedback-table th { background: var(--primary); color: white; padding: 12px 16px; text-align: left; font-weight: 700; }
+        .feedback-table td { padding: 12px 16px; border-bottom: 1px solid #e6edf5; color: #333; vertical-align: top; }
+        .feedback-table tr:last-child td { border-bottom: none; }
+        .feedback-table td strong { color: var(--primary); }
+        .feedback-table .swatch { display: inline-block; width: 16px; height: 16px; border-radius: 4px; vertical-align: middle; margin-right: 6px; }
+
+        .takeaway-box {
+            margin-top: 18px; padding: 20px 24px;
+            background: linear-gradient(135deg, #FFF8E1, #fffde7);
+            border-radius: 12px; color: #5a4a00; font-weight: 600; font-size: 15px;
+            line-height: 1.8; border-left: 4px solid #F1C40F;
+        }
+        .takeaway-box strong { color: var(--primary); }
+
+        /* Inline Score Summary */
+        .score-summary {
+            display: none; margin-top: 24px; animation: slideUp 0.5s ease;
+            background: linear-gradient(135deg, #f0f4fa, #e8f0fe);
+            border: 2px solid var(--primary); border-radius: 16px;
+            padding: 32px 36px; text-align: center; box-shadow: 0 8px 24px rgba(0,51,102,0.15);
+        }
+        .score-summary.show { display: block; }
+        .score-summary .big-emoji { font-size: 56px; display: block; margin-bottom: 8px; }
+        .score-summary h2 { color: var(--primary); font-size: 28px; margin-bottom: 6px; }
+        .score-summary .sub { color: #555; font-size: 16px; margin-bottom: 16px; }
+        .score-summary .time-display { font-size: 28px; font-weight: 700; color: var(--primary); margin: 8px 0; }
+        .score-summary .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 20px 0; }
+        .score-summary .stat-box { background: #fff; padding: 14px 12px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .score-summary .stat-box .num { font-size: 30px; font-weight: 700; color: var(--primary); }
+        .score-summary .stat-box .label { font-size: 12px; color: #777; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+        .score-summary .stars { font-size: 42px; letter-spacing: 6px; margin: 12px 0; }
+        .score-summary .final-badge { font-size: 19px; font-weight: 700; padding: 10px 28px; border-radius: 40px; display: inline-block; margin: 12px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .score-summary .final-badge.gold { background: linear-gradient(135deg, #FFD700, #FFA500); color: #1a2a3a; }
+        .score-summary .final-badge.silver { background: linear-gradient(135deg, #C0C0C0, #A8A8A8); color: #1a2a3a; }
+        .score-summary .final-badge.bronze { background: linear-gradient(135deg, #CD7F32, #B8860B); color: white; }
+        .score-summary .message { font-size: 16px; color: #333; line-height: 1.7; margin: 14px 0 20px; padding: 16px 20px; background: #fff; border-radius: 12px; border-left: 4px solid var(--primary); text-align: left; }
+        .score-summary .motivation { font-size: 16px; color: var(--primary); font-weight: 600; line-height: 1.7; margin: 14px 0 20px; padding: 18px 22px; background: linear-gradient(135deg, #eaf2f8, #e8f0fe); border-radius: 12px; border-left: 4px solid var(--blue1); text-align: center; font-style: italic; }
+        .score-summary .play-again-inline { background: linear-gradient(135deg, var(--primary), var(--blue2)); color: white; border: none; padding: 14px 44px; font-size: 18px; font-weight: 700; border-radius: 50px; cursor: pointer; transition: all 0.3s; box-shadow: 0 6px 20px rgba(0,51,102,0.4); }
+        .score-summary .play-again-inline:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0,51,102,0.5); }
+
+        /* Reset overlay */
+        .reset-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 10000; justify-content: center; align-items: center; }
+        .reset-overlay.show { display: flex; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from{opacity:0}to{opacity:1} }
+        .reset-dialog { background: white; border-radius: 20px; padding: 36px 40px; max-width: 420px; width: 90%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: cardZoom 0.4s cubic-bezier(0.68,-0.55,0.265,1.55); }
+        @keyframes cardZoom { 0%{transform:scale(0.5);opacity:0}100%{transform:scale(1);opacity:1} }
+        .reset-dialog h3 { color: var(--primary); font-size: 22px; margin-bottom: 12px; }
+        .reset-dialog p { color: #555; font-size: 15px; margin-bottom: 24px; line-height: 1.6; }
+        .reset-dialog .btn-row { justify-content: center; }
+
+        .confetti-box { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; overflow: hidden; }
+        .conf { position: absolute; width: 10px; height: 10px; opacity: 0; animation: cfall linear forwards; }
+        @keyframes cfall { 0%{opacity:1;transform:translateY(-10px) rotate(0)}100%{opacity:0;transform:translateY(100vh) rotate(720deg)} }
+
+        @media(max-width:700px){
+            .container{padding:28px 20px}
+            .game-area{flex-direction:column;gap:16px}
+            .cell{width:28px;height:28px;font-size:12px}
+            .word-bank{max-height:220px}
+            .top-bar{flex-direction:column;align-items:stretch;text-align:center}
+            .method{flex-direction:column;align-items:center;text-align:center;gap:6px}
+            .method .m-icon{font-size:34px}
+            .score-summary .stats{grid-template-columns:1fr 1fr 1fr}
+            .sound-toggle{top:10px;right:10px;padding:10px 14px;font-size:13px}
+        }
+        @media(max-width:420px){.cell{width:24px;height:24px;font-size:10px}.grid{gap:1px}}
+        @media print{.btn-row,.reset-overlay,.top-progress,.sound-toggle,.particles,.confetti-box,.score-summary,.feedback-section{display:none!important}body{background:#fff!important;animation:none!important}}
+    </style>
+</head>
+<body>
+<div class="top-progress"><div class="fill" id="topFill"></div></div>
+<div class="particles" id="particles"></div>
+<button class="sound-toggle" id="soundToggle">🔊 Sound: ON</button>
+
+<div class="container">
+    <div class="header">
+        <div class="module-code">BMA4000-20 | THE BUSINESS ENVIRONMENT</div>
+        <div class="session-title">Sessions 1 & 2: Key Business Terms</div>
+        <div class="activity-type">🔍 Interactive Activity – Crossword Word Search</div>
+    </div>
+    <h1>🔍 Crossword Word Search</h1>
+    <div class="subtitle">Find 16 key business terms hidden in the grid. Words intersect like a real crossword!</div>
+
+    <div class="why-matters">
+        <h3>💡 Why This Matters</h3>
+        <p>This is not just a word search — it is a <strong>vocabulary builder</strong> for your future career. These 16 terms from Sessions 1 & 2 are the <strong>foundation language</strong> of business analysis. Mastering them means you can:</p>
+        <ul>
+            <li><strong>Analyse</strong> business environments using PESTLE, MACRO, MESO, and MICRO frameworks</li>
+            <li><strong>Map</strong> stakeholders using Mendelow's Matrix (Power × Interest)</li>
+            <li><strong>Classify</strong> uncertainty as Simple/Static, Dynamic, or Complex</li>
+            <li><strong>Discuss</strong> business transformation, value creation, and stakeholder management with confidence</li>
+        </ul>
+        <p class="closing">"The limits of my language mean the limits of my world." — Ludwig Wittgenstein</p>
+    </div>
+
+    <div class="instructions">
+        <h3>📖 How to Play — Two Easy Methods</h3>
+        <div class="method">
+            <div class="m-icon">👆</div>
+            <div class="m-body">
+                <div class="m-title">Method 1: Tap-Tap <span class="m-badge phone">📱 Best for Mobile</span></div>
+                <div class="m-steps">
+                    <strong>Step 1:</strong> Tap the <strong>first letter</strong> of the word (it turns gold)<br/>
+                    <strong>Step 2:</strong> Tap the <strong>last letter</strong> of the word<br/>
+                    The game draws the line between them automatically!<br/>
+                    <em>Letters shared between words can be tapped again for the next word.</em>
+                </div>
+            </div>
+        </div>
+        <div class="method">
+            <div class="m-icon">🖱️</div>
+            <div class="m-body">
+                <div class="m-title">Method 2: Click & Drag <span class="m-badge desktop">💻 Best for Desktop</span></div>
+                <div class="m-steps">
+                    <strong>Step 1:</strong> Click and hold the <strong>first letter</strong><br/>
+                    <strong>Step 2:</strong> Drag to the <strong>last letter</strong> and release<br/>
+                    Works with mouse or trackpad.
+                </div>
+            </div>
+        </div>
+        <div class="rules">
+            <strong>📏 Rules:</strong> Words go <strong>across →</strong> or <strong>down ↓</strong> only (no diagonals). Words <strong>share letters</strong> at intersections — a letter can belong to two words. 💡 Hint adds 10 seconds. Find all <strong>16 words</strong> to win!
+        </div>
+    </div>
+
+    <div class="top-bar">
+        <span>⏱️ <span class="timer" id="timer">0s</span></span>
+        <span><span class="hint-label" id="hintLabel"></span><button class="hint-btn" id="hintBtn">💡 Hint</button></span>
+    </div>
+
+    <div class="sel-indicator" id="selIndicator">👆 First letter selected — now tap the <strong>last letter</strong> of the word!</div>
+
+    <div class="game-area">
+        <div class="grid-wrap"><div class="grid" id="grid"></div></div>
+        <div class="word-bank"><h3>📋 Words to Find</h3><div id="wlist"></div></div>
+    </div>
+
+    <div class="progress-row">
+        <span class="ptxt">Found: <strong id="fc">0</strong>/<strong id="tc">16</strong></span>
+        <div class="pbar"><div class="pfill" id="pf"></div></div>
+    </div>
+    <div class="msg" id="msg"></div>
+    <div class="reveal-label" id="revealLabel">🔍 Your 16 business terms — take a moment to memorise them!</div>
+
+    <div class="btn-row">
+        <button class="btn btn-p" id="newBtn">🔄 New Puzzle</button>
+        <button class="btn btn-s" id="clrBtn">🧹 Clear Selection</button>
+    </div>
+
+    <!-- Inline Feedback -->
+    <div class="feedback-section" id="feedbackSection">
+        <h3 id="feedbackTitle">📊 Your Results</h3>
+        <table class="feedback-table" id="feedbackTable"></table>
+        <div class="takeaway-box" id="takeawayBox"></div>
+    </div>
+
+    <!-- Inline Score Summary -->
+    <div class="score-summary" id="scoreSummary">
+        <span class="big-emoji" id="scoreEmoji">🎉</span>
+        <h2 id="scoreTitle">Well Done!</h2>
+        <p class="sub" id="scoreSub">You found them all!</p>
+        <div class="time-display" id="scoreTime">0s</div>
+        <div class="stats">
+            <div class="stat-box"><div class="num" id="scoreFound">0</div><div class="label">✅ Found</div></div>
+            <div class="stat-box"><div class="num" id="scoreHints">0</div><div class="label">💡 Hints Used</div></div>
+            <div class="stat-box"><div class="num" id="scoreAccuracy">100%</div><div class="label">🎯 Accuracy</div></div>
+        </div>
+        <div class="stars" id="scoreStars">⭐⭐⭐</div>
+        <div class="final-badge" id="scoreBadge">🥇 Gold</div>
+        <div class="message" id="scoreMessage"></div>
+        <div class="motivation" id="scoreMotivation"></div>
+        <button class="play-again-inline" id="scorePlayAgainBtn">🔄 Play Again (New Puzzle)</button>
+    </div>
+
+    <div class="confetti-box" id="confBox"></div>
+</div>
+
+<!-- Reset Dialog -->
+<div class="reset-overlay" id="resetOverlay">
+    <div class="reset-dialog">
+        <h3>🔄 New Puzzle?</h3>
+        <p>Current progress will be lost. A brand new grid will be generated.</p>
+        <div class="btn-row">
+            <button class="btn btn-p" id="ovYes" style="background:#C0392B">Yes</button>
+            <button class="btn btn-s" id="ovNo">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// Audio
+class AudioSys {
+    constructor(){this.on=true;this.ctx=null;this.m=null;this.init();}
+    init(){try{this.ctx=new(window.AudioContext||window.webkitAudioContext)();this.m=this.ctx.createGain();this.m.gain.value=0.08;this.m.connect(this.ctx.destination);this.ambient();}catch(e){this.on=false;}}
+    ambient(){if(!this.ctx||!this.on)return;[130.81,164.81,196,261.63].forEach((f,i)=>{const o=this.ctx.createOscillator(),g=this.ctx.createGain(),fl=this.ctx.createBiquadFilter();o.type='sine';o.frequency.value=f;fl.type='lowpass';fl.frequency.value=800;g.gain.setValueAtTime(0,this.ctx.currentTime);g.gain.linearRampToValueAtTime(0.12,this.ctx.currentTime+3);const l=this.ctx.createOscillator(),lg=this.ctx.createGain();l.frequency.value=0.1+i*0.05;lg.gain.value=2;l.connect(lg);lg.connect(o.frequency);l.start();o.connect(fl);fl.connect(g);g.connect(this.m);o.start();});}
+    found(){if(!this.ctx||!this.on)return;const n=this.ctx.currentTime;[523.25,659.25,783.99].forEach((f,i)=>{const o=this.ctx.createOscillator(),g=this.ctx.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0,n+i*0.08);g.gain.linearRampToValueAtTime(0.2,n+i*0.08+0.04);g.gain.exponentialRampToValueAtTime(0.01,n+i*0.08+0.25);o.connect(g);g.connect(this.m);o.start(n+i*0.08);o.stop(n+i*0.08+0.25);});}
+    complete(){if(!this.ctx||!this.on)return;const n=this.ctx.currentTime;[523.25,659.25,783.99,1046.5,1318.51].forEach((f,i)=>{const o=this.ctx.createOscillator(),g=this.ctx.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0,n+i*0.12);g.gain.linearRampToValueAtTime(0.25,n+i*0.12+0.05);g.gain.exponentialRampToValueAtTime(0.01,n+i*0.12+0.5);o.connect(g);g.connect(this.m);o.start(n+i*0.12);o.stop(n+i*0.12+0.5);});}
+    wrong(){if(!this.ctx||!this.on)return;const n=this.ctx.currentTime,o=this.ctx.createOscillator(),g=this.ctx.createGain();o.type='triangle';o.frequency.setValueAtTime(250,n);o.frequency.exponentialRampToValueAtTime(150,n+0.2);g.gain.setValueAtTime(0.12,n);g.gain.exponentialRampToValueAtTime(0.01,n+0.2);o.connect(g);g.connect(this.m);o.start(n);o.stop(n+0.2);}
+    toggle(){this.on=!this.on;if(this.m)this.m.gain.linearRampToValueAtTime(this.on?0.08:0,this.ctx.currentTime+0.5);return this.on;}
+}
+const audio=new AudioSys();
+
+(function(){const c=document.getElementById('particles');for(let i=0;i<25;i++){const p=document.createElement('div');p.className='particle';p.style.left=Math.random()*100+'%';p.style.animationDuration=(15+Math.random()*20)+'s';p.style.animationDelay=Math.random()*10+'s';p.style.width=p.style.height=(2+Math.random()*4)+'px';c.appendChild(p);}})();
+window.addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-document.documentElement.clientHeight;document.getElementById('topFill').style.width=(document.documentElement.scrollTop/h*100)+'%';});
+document.getElementById('soundToggle').addEventListener('click',function(){this.textContent=audio.toggle()?'🔊 Sound: ON':'🔇 Sound: OFF';});
+
+// Words
+const WORDS=[
+    {w:'PESTLE',i:'🏢'},{w:'MACRO',i:'🏢'},{w:'MESO',i:'🏢'},{w:'MICRO',i:'🏢'},
+    {w:'VALUE',i:'💰'},{w:'TRANSFORMATION',i:'🔄'},{w:'STAKEHOLDER',i:'👥'},{w:'INTERNAL',i:'🏢'},
+    {w:'EXTERNAL',i:'🌍'},{w:'UNCERTAINTY',i:'❓'},{w:'DYNAMIC',i:'⚡'},{w:'COMPLEX',i:'🌀'},
+    {w:'POWER',i:'💪'},{w:'INTEREST',i:'❤️'},{w:'MENDELOW',i:'📊'},{w:'MATRIX',i:'📋'}
+];
+const GS=16;
+let G=[],placed=[],found=[],sel=false,start=null,hl=[],done=false,secs=0,tInt=null,started=false,hinting=false,firstTap=null,hintsUsed=0;
+
+const $=id=>document.getElementById(id);
+const gridEl=$('grid'),wlist=$('wlist');
+
+function shuf(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+// Grid Generation - H & V ONLY with forced intersections
+function genGrid(){
+    G=[];for(let r=0;r<GS;r++){G[r]=[];for(let c=0;c<GS;c++)G[r][c]='';}
+    placed=[];
+    const sorted=shuf([...WORDS]).sort((a,b)=>b.w.length-a.w.length);
+    const f=sorted[0],fr=Math.floor(GS/2),fc=Math.floor((GS-f.w.length)/2);
+    for(let i=0;i<f.w.length;i++)G[fr][fc+i]=f.w[i];
+    placed.push({w:f.w,r:fr,c:fc,d:[0,1],i:f.i});
+
+    for(let wi=1;wi<sorted.length;wi++){
+        const word=sorted[wi].w;let ok=false,tries=0;
+        while(!ok&&tries<1200){
+            tries++;
+            const target=placed[Math.floor(Math.random()*placed.length)];
+            const indices=[];
+            for(let a=0;a<word.length;a++)for(let b=0;b<target.w.length;b++)if(word[a]===target.w[b])indices.push([a,b]);
+            if(indices.length===0)continue;
+            const pick=indices[Math.floor(Math.random()*indices.length)];
+            const si=pick[0],ti=pick[1];
+            const nd=target.d[0]===0?[1,0]:[0,1]; // perpendicular
+            const tR=target.r+target.d[0]*ti,tC=target.c+target.d[1]*ti;
+            const sR=tR-nd[0]*si,sC=tC-nd[1]*si;
+            let fits=true;
+            for(let k=0;k<word.length;k++){
+                const nr=sR+nd[0]*k,nc=sC+nd[1]*k;
+                if(nr<0||nr>=GS||nc<0||nc>=GS){fits=false;break;}
+                if(G[nr][nc]!==''&&G[nr][nc]!==word[k]){fits=false;break;}
+                if(G[nr][nc]===''&&k!==si){
+                    const perp=nd[0]===0?[[1,0],[-1,0]]:[[0,1],[0,-1]];
+                    for(const p of perp){const ar=nr+p[0],ac=nc+p[1];if(ar>=0&&ar<GS&&ac>=0&&ac<GS&&G[ar][ac]!==''&&!(ar===tR&&ac===tC)){fits=false;break;}}
+                    if(!fits)break;
+                }
+            }
+            if(!fits)continue;
+            const br=sR-nd[0],bc=sC-nd[1];if(br>=0&&br<GS&&bc>=0&&bc<GS&&G[br][bc]!=='')continue;
+            const ar=sR+nd[0]*word.length,ac=sC+nd[1]*word.length;if(ar>=0&&ar<GS&&ac>=0&&ac<GS&&G[ar][ac]!=='')continue;
+            for(let k=0;k<word.length;k++)G[sR+nd[0]*k][sC+nd[1]*k]=word[k];
+            placed.push({w:word,r:sR,c:sC,d:nd,i:sorted[wi].i});ok=true;
+        }
+        if(!ok){for(let t2=0;t2<400&&!ok;t2++){const d=[[0,1],[1,0]][Math.floor(Math.random()*2)];const mr=d[0]?GS-word.length:GS-1,mc=d[1]?GS-word.length:GS-1;const r=Math.floor(Math.random()*(mr+1)),c=Math.floor(Math.random()*(mc+1));let f2=true;for(let k=0;k<word.length;k++){if(G[r+d[0]*k][c+d[1]*k]!==''&&G[r+d[0]*k][c+d[1]*k]!==word[k]){f2=false;break;}}if(f2){for(let k=0;k<word.length;k++)G[r+d[0]*k][c+d[1]*k]=word[k];placed.push({w:word,r,c,d,i:sorted[wi].i});ok=true;}}}
+    }
+    const L='ABCDEFGHIJKLMNOPQRSTUVWXYZ';for(let r=0;r<GS;r++)for(let c=0;c<GS;c++)if(G[r][c]==='')G[r][c]=L[Math.floor(Math.random()*26)];
+}
+
+function render(){
+    gridEl.style.gridTemplateColumns=`repeat(${GS},1fr)`;gridEl.innerHTML='';
+    const cm={};found.forEach((w,i)=>{const p=placed.find(x=>x.w===w);if(p)for(let k=0;k<p.w.length;k++)cm[(p.r+p.d[0]*k)+','+(p.c+p.d[1]*k)]=i;});
+    for(let r=0;r<GS;r++)for(let c=0;c<GS;c++){
+        const d=document.createElement('div');d.className='cell';d.dataset.r=r;d.dataset.c=c;
+        d.textContent=G[r][c];const k=r+','+c;if(cm[k]!==undefined)d.classList.add('found','c'+cm[k]);
+        d.addEventListener('mousedown',e=>{e.preventDefault();if(done)return;if(!started)startTimer();beginSel(r,c);});
+        d.addEventListener('mouseenter',()=>{if(sel)extSel(r,c);});
+        d.addEventListener('mouseup',endSel);
+        gridEl.appendChild(d);
+    }
+    updProg();updBank();
+}
+
+// Single touch handler on grid (bulletproof mobile)
+gridEl.addEventListener('touchstart',function(e){
+    e.preventDefault();if(done)return;if(!started)startTimer();
+    const touch=e.touches[0];const el=document.elementFromPoint(touch.clientX,touch.clientY);
+    if(!el||!el.classList.contains('cell')||el.classList.contains('faded'))return;
+    handleTap(parseInt(el.dataset.r),parseInt(el.dataset.c));
+},{passive:false});
+gridEl.addEventListener('touchend',e=>e.preventDefault(),{passive:false});
+gridEl.addEventListener('touchmove',e=>e.preventDefault(),{passive:false});
+
+// Tap-Tap Mode
+function handleTap(r,c){
+    const cl=gc(r,c);if(!cl||cl.classList.contains('faded'))return;
+    if(!firstTap){firstTap={r,c};cl.classList.add('first-tap');$('selIndicator').classList.add('show');}
+    else{
+        const fr=firstTap.r,fc2=firstTap.c;
+        const prevCl=gc(fr,fc2);if(prevCl)prevCl.classList.remove('first-tap');
+        $('selIndicator').classList.remove('show');
+        if(fr===r&&fc2===c){firstTap=null;return;}
+        const dr=r-fr,dc=c-fc2;let dir=null;
+        if(dr===0&&dc!==0)dir=[0,dc>0?1:-1];
+        else if(dc===0&&dr!==0)dir=[dr>0?1:-1,0];
+        if(!dir){firstTap={r,c};cl.classList.add('first-tap');$('selIndicator').classList.add('show');return;}
+        const steps=Math.max(Math.abs(dr),Math.abs(dc));
+        sel=true;start={r:fr,c:fc2};hl=[];
+        for(let i=0;i<=steps;i++){const nr=fr+dir[0]*i,nc=fc2+dir[1]*i;if(nr<0||nr>=GS||nc<0||nc>=GS)break;const c2=gc(nr,nc);if(c2&&!c2.classList.contains('faded')){c2.classList.add('selecting');hl.push({r:nr,c:nc});}else break;}
+        firstTap=null;endSel();
+    }
+}
+
+function gc(r,c){return gridEl.querySelector(`.cell[data-r="${r}"][data-c="${c}"]`);}
+
+function updBank(){
+    wlist.innerHTML='';WORDS.forEach(wd=>{const d=document.createElement('div');d.className='word-item';const fi=found.indexOf(wd.w);if(fi!==-1)d.classList.add('found','wc'+fi);d.innerHTML=`<span class="icon">${wd.i}</span><span class="txt">${wd.w}</span><span class="chk">✅</span>`;wlist.appendChild(d);});
+}
+function updProg(){const f=found.length,t=WORDS.length;$('fc').textContent=f;$('tc').textContent=t;$('pf').style.width=(f/t*100)+'%';$('hintBtn').disabled=f===t||done;}
+
+function beginSel(r,c){sel=true;start={r,c};hl=[{r,c}];const cl=gc(r,c);if(cl)cl.classList.add('selecting');hideMsg();firstTap=null;$('selIndicator').classList.remove('show');}
+function extSel(r,c){if(!sel)return;const cl=gc(r,c);if(!cl||cl.classList.contains('faded'))return;const dr=r-start.r,dc=c-start.c;let d=null;if(dr===0&&dc>0)d=[0,1];else if(dr===0&&dc<0)d=[0,-1];else if(dr>0&&dc===0)d=[1,0];else if(dr<0&&dc===0)d=[-1,0];else{clrHL();start={r,c};hl=[{r,c}];if(cl)cl.classList.add('selecting');return;}clrHL();const steps=Math.max(Math.abs(dr),Math.abs(dc));hl=[];for(let i=0;i<=steps;i++){const nr=start.r+d[0]*i,nc=start.c+d[1]*i;if(nr<0||nr>=GS||nc<0||nc>=GS)break;const c2=gc(nr,nc);if(c2&&!c2.classList.contains('faded')){c2.classList.add('selecting');hl.push({r:nr,c:nc});}else break;}}
+
+function endSel(){
+    if(!sel)return;sel=false;if(hl.length<2){clrHL();return;}
+    let word='';hl.forEach(p=>word+=G[p.r][p.c]);
+    const fw=WORDS.find(wd=>wd.w===word&&!found.includes(wd.w));
+    if(fw){
+        found.push(fw.w);const ci=found.length-1;
+        hl.forEach(p=>{const cl=gc(p.r,p.c);if(cl){cl.classList.remove('selecting');for(let x=0;x<16;x++)cl.classList.remove('c'+x);cl.classList.add('found','c'+ci);}});
+        hl=[];updProg();updBank();audio.found();
+        if(found.length===WORDS.length){done=true;stopTimer();revealAndComplete();}
+        showMsg('✅ Found "'+fw.w+'"!','ok');
+    }else if(WORDS.some(wd=>wd.w===word)&&found.includes(word)){audio.wrong();showMsg('Already found!','err');clrHL();}
+    else{audio.wrong();showMsg('Not a word – try again','err');clrHL();}
+}
+
+function clrHL(){hl.forEach(p=>{const cl=gc(p.r,p.c);if(cl)cl.classList.remove('selecting');});hl=[];document.querySelectorAll('.cell.first-tap').forEach(c=>c.classList.remove('first-tap'));firstTap=null;$('selIndicator').classList.remove('show');}
+
+// Hint
+function hint(){if(hinting||done)return;const uf=WORDS.filter(wd=>!found.includes(wd.w));if(!uf.length)return;const rw=uf[Math.floor(Math.random()*uf.length)];const pl=placed.find(p=>p.w===rw.w);if(!pl)return;hinting=true;$('hintBtn').disabled=true;$('hintLabel').textContent='Showing: '+rw.w;const cells=[];for(let k=0;k<pl.w.length;k++){const cl=gc(pl.r+pl.d[0]*k,pl.c+pl.d[1]*k);if(cl)cells.push(cl);}let n=0;const iv=setInterval(()=>{cells.forEach(c=>c.classList.toggle('hint-flash'));n++;if(n>=10){clearInterval(iv);cells.forEach(c=>c.classList.remove('hint-flash'));hinting=false;$('hintBtn').disabled=false;$('hintLabel').textContent='';secs+=10;$('timer').textContent=secs+'s';hintsUsed++;}},300);}
+
+// Reveal mode
+function revealAndComplete(){
+    const foundCells=new Set();found.forEach(w=>{const p=placed.find(x=>x.w===w);if(p)for(let k=0;k<p.w.length;k++)foundCells.add((p.r+p.d[0]*k)+','+(p.c+p.d[1]*k));});
+    const allCells=gridEl.querySelectorAll('.cell');let delay=0;
+    allCells.forEach(cell=>{const key=cell.dataset.r+','+cell.dataset.c;if(foundCells.has(key)){setTimeout(()=>cell.classList.add('revealed'),delay);delay+=15;}else{setTimeout(()=>cell.classList.add('faded'),delay);delay+=8;}});
+    setTimeout(()=>$('revealLabel').classList.add('show'),delay+200);
+    setTimeout(()=>{showFeedback();showDone();},delay+1200);
+}
+
+// Inline feedback
+function showFeedback(){
+    let rows='';const colours=['#2ECC71','#27AE60','#1E8449','#196F3D','#2980B9','#2471A3','#1A5276','#154360','#1ABC9C','#17A589','#148F77','#0E6655','#3498DB','#2E86C1','#2874A6','#21618C'];
+    found.forEach((w,i)=>{const wd=WORDS.find(x=>x.w===w);rows+=`<tr><td><span class="swatch" style="background:${colours[i]}"></span><strong>${w}</strong></td><td>${wd.i}</td><td>✅ Found</td></tr>`;});
+    $('feedbackTable').innerHTML='<thead><tr><th>Term</th><th>Icon</th><th>Status</th></tr></thead><tbody>'+rows+'</tbody>';
+    $('feedbackTitle').textContent='📊 All 16 Terms Found!';
+    $('takeawayBox').innerHTML='🎉 <strong>Excellent!</strong> You\'ve found all 16 key business terms from Sessions 1 & 2:<br/>• <strong>Environmental Analysis:</strong> PESTLE, MACRO, MESO, MICRO<br/>• <strong>Change & Value:</strong> TRANSFORMATION, VALUE<br/>• <strong>Stakeholder Mapping:</strong> STAKEHOLDER, POWER, INTEREST, MENDELOW, MATRIX<br/>• <strong>Uncertainty Types:</strong> INTERNAL, EXTERNAL, UNCERTAINTY, DYNAMIC, COMPLEX<br/><br/>These terms are your <strong>strategic toolkit</strong>. Use them in essays, presentations, and discussions!';
+    $('feedbackSection').classList.add('show');
+}
+
+function showDone(){
+    const t=secs;let stars,badge,bClass,emoji,title,sub;
+    if(t<180&&hintsUsed===0){stars='⭐⭐⭐';badge='🏆 PLATINUM – PERFECT!';bClass='gold';emoji='👑';title='ABSOLUTELY BRILLIANT!';sub='Under 3 minutes with no hints!';}
+    else if(t<300){stars='⭐⭐⭐';badge='🥇 GOLD – EXCELLENT!';bClass='gold';emoji='🏅';title='Outstanding Work!';sub='Strong vocabulary mastery!';}
+    else if(t<480){stars='⭐⭐';badge='🥈 SILVER – GREAT!';bClass='silver';emoji='🌟';title='Well Done!';sub='Good business vocabulary!';}
+    else{stars='⭐';badge='🥉 BRONZE – KEEP GOING!';bClass='bronze';emoji='💪';title='Nice Work!';sub='Every attempt builds vocabulary.';}
+    $('scoreEmoji').textContent=emoji;$('scoreTitle').textContent=title;$('scoreSub').textContent=sub;
+    $('scoreTime').textContent=t+'s';$('scoreFound').textContent='16';$('scoreHints').textContent=hintsUsed;$('scoreAccuracy').textContent='100%';
+    $('scoreStars').textContent=stars;$('scoreBadge').textContent=badge;$('scoreBadge').className='final-badge '+bClass;
+    $('scoreMessage').innerHTML='You just found and reinforced <strong>16 essential business terms</strong> — from <strong>PESTLE</strong> to <strong>MENDELOW</strong>, from <strong>STAKEHOLDER</strong> to <strong>TRANSFORMATION</strong>. These are not just words on a grid. They are the language you will use in every report, every presentation, and every conversation throughout your career.';
+    $('scoreMotivation').innerHTML='🌟 <strong>Keep building your business vocabulary.</strong><br/>Every term you learn today is a tool you will carry for life.<br/>Read business news. Use these words in your assignments. Speak them with confidence.<br/><strong>Your future self will thank you.</strong>';
+    $('scoreSummary').classList.add('show');
+    audio.complete();confetti();setTimeout(confetti,500);setTimeout(confetti,1000);
+    setTimeout(()=>$('scoreSummary').scrollIntoView({behavior:'smooth',block:'center'}),300);
+}
+
+function confetti(){const cs=['#2ECC71','#2980B9','#1ABC9C','#3498DB','#27AE60','#1A5276','#F1C40F','#E74C3C'];for(let i=0;i<100;i++){const p=document.createElement('div');p.className='conf';p.style.left=Math.random()*100+'%';p.style.top='-10px';p.style.background=cs[Math.floor(Math.random()*cs.length)];p.style.animationDuration=(2+Math.random()*2)+'s';p.style.animationDelay=(Math.random()*1)+'s';$('confBox').appendChild(p);setTimeout(()=>p.remove(),5000);}}
+
+function startTimer(){started=true;tInt=setInterval(()=>{secs++;$('timer').textContent=secs+'s';},1000);}
+function stopTimer(){clearInterval(tInt);tInt=null;}
+function resetTimer(){stopTimer();secs=0;started=false;$('timer').textContent='0s';}
+function showMsg(t,c){const m=$('msg');m.textContent=t;m.className='msg show '+c;setTimeout(()=>{m.className='msg';},2000);}
+function hideMsg(){$('msg').className='msg';}
+
+function newGame(){if(found.length>0&&found.length<WORDS.length){$('resetOverlay').classList.add('show');return;}doReset();}
+function doReset(){found=[];done=false;hinting=false;firstTap=null;hintsUsed=0;resetTimer();hideMsg();$('scoreSummary').classList.remove('show');$('feedbackSection').classList.remove('show');$('revealLabel').classList.remove('show');$('selIndicator').classList.remove('show');$('hintBtn').disabled=false;$('hintLabel').textContent='';genGrid();render();$('resetOverlay').classList.remove('show');window.scrollTo({top:0,behavior:'smooth'});}
+
+document.addEventListener('mouseup',()=>{if(sel)endSel();});
+$('newBtn').addEventListener('click',newGame);
+$('clrBtn').addEventListener('click',()=>{clrHL();sel=false;start=null;hideMsg();});
+$('hintBtn').addEventListener('click',hint);
+$('scorePlayAgainBtn').addEventListener('click',doReset);
+$('ovYes').addEventListener('click',doReset);
+$('ovNo').addEventListener('click',()=>$('resetOverlay').classList.remove('show'));
+$('resetOverlay').addEventListener('click',e=>{if(e.target===$('resetOverlay'))$('resetOverlay').classList.remove('show');});
+
+genGrid();render();
+console.log('✅ Word Search ENHANCED – H&V only, forced intersections, tap-tap, reveal mode, full signature!');
+</script>
+</body>
+</html>
