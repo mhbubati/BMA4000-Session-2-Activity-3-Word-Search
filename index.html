@@ -55,7 +55,6 @@
         .why-matters ul li strong { color: var(--primary); }
         .why-matters .closing { font-size: 15px; color: var(--primary); font-weight: 600; margin-top: 10px; font-style: italic; }
 
-        /* Instructions */
         .instructions { background: #f5f7fa; border-radius: 12px; padding: 20px 24px; margin-bottom: 24px; border-left: 4px solid var(--primary); }
         .instructions h3 { color: var(--primary); font-size: 17px; margin-bottom: 12px; }
         .method { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 14px; padding: 14px 16px; background: #fff; border-radius: 10px; border: 1px solid #e8ecf1; }
@@ -71,7 +70,6 @@
         .rules { margin-top: 14px; padding: 12px 16px; background: linear-gradient(135deg, #eaf2f8, #e8f0fe); border-radius: 10px; font-size: 14px; color: #333; line-height: 1.7; }
         .rules strong { color: var(--primary); }
 
-        /* Top bar */
         .top-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 18px; padding: 12px 18px; background: #f5f7fa; border-radius: 10px; }
         .timer { font-size: 22px; font-weight: 700; color: var(--primary); font-variant-numeric: tabular-nums; }
         .hint-btn { background: var(--primary); color: #fff; border: none; padding: 10px 24px; font-size: 14px; font-weight: 700; border-radius: 30px; cursor: pointer; transition: all 0.2s; }
@@ -79,21 +77,47 @@
         .hint-btn:disabled { opacity: 0.4; cursor: not-allowed; }
         .hint-label { font-size: 12px; color: #888; margin-right: 6px; }
 
-        /* Selection indicator */
         .sel-indicator { display: none; text-align: center; padding: 10px 18px; margin-bottom: 14px; background: linear-gradient(135deg, var(--primary), var(--blue2)); color: #fff; border-radius: 10px; font-size: 15px; font-weight: 600; animation: slideDown 0.3s ease; }
         .sel-indicator.show { display: block; }
         @keyframes slideDown { from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)} }
 
-        /* Game layout */
+        /* ============================================================
+           GAME LAYOUT - RESPONSIVE GRID
+           ============================================================ */
         .game-area { display: flex; flex-wrap: wrap; gap: 24px; }
-        .grid-wrap { flex: 2; min-width: 300px; overflow-x: auto; }
-        .grid { display: inline-grid; gap: 2px; user-select: none; -webkit-user-select: none; touch-action: manipulation; }
+        .grid-wrap { 
+            flex: 2; 
+            min-width: 280px; 
+            width: 100%;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(14, 1fr); /* Always 14 columns, fluid width */
+            gap: 2px; 
+            width: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            user-select: none; 
+            -webkit-user-select: none; 
+            touch-action: manipulation; 
+        }
         .cell {
-            width: 34px; height: 34px; display: flex; justify-content: center; align-items: center;
-            font-size: 15px; font-weight: 700; color: var(--primary); background: #f8f9fa;
-            border: 1px solid #dde1e6; border-radius: 4px; cursor: pointer;
-            text-transform: uppercase; transition: all 0.5s ease;
+            aspect-ratio: 1; /* Always square */
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            font-size: 16px;
+            font-weight: 700; 
+            color: var(--primary); 
+            background: #f8f9fa;
+            border: 1px solid #dde1e6; 
+            border-radius: 4px; 
+            cursor: pointer;
+            text-transform: uppercase; 
+            transition: all 0.5s ease;
             -webkit-tap-highlight-color: transparent;
+            min-width: 0; /* Allow shrinking below content */
         }
         .cell:hover:not(.faded) { background: #e8ecf1; }
         .cell.selecting { background: #F1C40F !important; color: #333 !important; transform: scale(1.06) !important; border-color: #F1C40F !important; text-shadow: none !important; box-shadow: 0 0 0 2px rgba(241,196,15,0.4) !important; z-index: 2; position: relative; transition: all 0.12s !important; }
@@ -101,14 +125,12 @@
         .cell.hint-flash { animation: hintFlash 0.35s ease 5; }
         @keyframes hintFlash { 0%,100%{background:#f8f9fa}50%{background:#F1C40F;transform:scale(1.1)} }
 
-        /* Found colours - green gradient + blue tones */
         .cell.found { color: #fff !important; cursor: pointer; border-color: transparent; text-shadow: 0 1px 1px rgba(0,0,0,0.2); }
         .cell.c0{background:#2ECC71}.cell.c1{background:#27AE60}.cell.c2{background:#1E8449}.cell.c3{background:#196F3D}
         .cell.c4{background:#2980B9}.cell.c5{background:#2471A3}.cell.c6{background:#1A5276}.cell.c7{background:#154360}
         .cell.c8{background:#1ABC9C}.cell.c9{background:#17A589}.cell.c10{background:#148F77}.cell.c11{background:#0E6655}
         .cell.c12{background:#3498DB}.cell.c13{background:#2E86C1}.cell.c14{background:#2874A6}.cell.c15{background:#21618C}
 
-        /* Reveal mode */
         .cell.faded { opacity: 0 !important; transform: scale(0.5) !important; pointer-events: none !important; border-color: transparent !important; background: transparent !important; color: transparent !important; }
         .cell.revealed { transform: scale(1.05); box-shadow: 0 2px 8px rgba(0,0,0,0.15); border-radius: 4px; }
 
@@ -116,7 +138,6 @@
         .reveal-label.show { display: block; }
         @keyframes fadeSlide { from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)} }
 
-        /* Word bank */
         .word-bank { flex: 1; min-width: 200px; background: #f8f9fa; border-radius: 12px; padding: 18px; border: 1px solid #dde1e6; max-height: 520px; overflow-y: auto; }
         .word-bank h3 { font-size: 16px; color: var(--primary); margin-bottom: 12px; text-align: center; }
         .word-item { display: flex; align-items: center; gap: 8px; padding: 8px 12px; margin-bottom: 5px; border-radius: 8px; font-size: 14px; font-weight: 600; color: var(--primary); background: #fff; border: 1px solid #e8ecf1; transition: all 0.25s; }
@@ -130,7 +151,6 @@
         .word-item .chk { opacity: 0; transition: opacity 0.2s; }
         .word-item.found .chk { opacity: 1; }
 
-        /* Progress */
         .progress-row { display: flex; align-items: center; gap: 12px; margin: 16px 0; padding: 12px 18px; background: #f5f7fa; border-radius: 10px; }
         .progress-row .ptxt { font-size: 15px; font-weight: 600; color: var(--primary); white-space: nowrap; }
         .progress-row .ptxt strong { font-size: 20px; }
@@ -151,7 +171,6 @@
         .btn-s { background: #e8ecf1; color: var(--primary); }
         .btn-s:hover { background: #dde1e6; transform: translateY(-1px); }
 
-        /* Inline Feedback */
         .feedback-section { display: none; margin-top: 24px; animation: slideUp 0.5s ease; }
         .feedback-section.show { display: block; }
         @keyframes slideUp { from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)} }
@@ -171,7 +190,6 @@
         }
         .takeaway-box strong { color: var(--primary); }
 
-        /* Inline Score Summary */
         .score-summary {
             display: none; margin-top: 24px; animation: slideUp 0.5s ease;
             background: linear-gradient(135deg, #f0f4fa, #e8f0fe);
@@ -197,7 +215,6 @@
         .score-summary .play-again-inline { background: linear-gradient(135deg, var(--primary), var(--blue2)); color: white; border: none; padding: 14px 44px; font-size: 18px; font-weight: 700; border-radius: 50px; cursor: pointer; transition: all 0.3s; box-shadow: 0 6px 20px rgba(0,51,102,0.4); }
         .score-summary .play-again-inline:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0,51,102,0.5); }
 
-        /* Reset overlay */
         .reset-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 10000; justify-content: center; align-items: center; }
         .reset-overlay.show { display: flex; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from{opacity:0}to{opacity:1} }
@@ -211,19 +228,104 @@
         .conf { position: absolute; width: 10px; height: 10px; opacity: 0; animation: cfall linear forwards; }
         @keyframes cfall { 0%{opacity:1;transform:translateY(-10px) rotate(0)}100%{opacity:0;transform:translateY(100vh) rotate(720deg)} }
 
-        @media(max-width:700px){
-            .container{padding:28px 20px}
-            .game-area{flex-direction:column;gap:16px}
-            .cell{width:28px;height:28px;font-size:12px}
-            .word-bank{max-height:220px}
-            .top-bar{flex-direction:column;align-items:stretch;text-align:center}
-            .method{flex-direction:column;align-items:center;text-align:center;gap:6px}
-            .method .m-icon{font-size:34px}
-            .score-summary .stats{grid-template-columns:1fr 1fr 1fr}
-            .sound-toggle{top:10px;right:10px;padding:10px 14px;font-size:13px}
+        /* ============================================================
+           RESPONSIVE – MOBILE FIX
+           ============================================================ */
+        @media (max-width: 700px) {
+            body { padding: 24px 12px; }
+            .container { padding: 28px 18px; border-radius: 16px; }
+            .header .session-title { font-size: 22px; }
+            h1 { font-size: 24px; }
+            .subtitle { font-size: 15px; padding: 10px 16px; }
+            .why-matters { padding: 18px 20px; }
+            .why-matters h3 { font-size: 16px; }
+            .why-matters p, .why-matters ul li { font-size: 14px; }
+            .instructions { padding: 16px 18px; }
+            .instructions h3 { font-size: 15px; }
+            .method { flex-direction: column; align-items: center; text-align: center; gap: 6px; padding: 12px 14px; }
+            .method .m-icon { font-size: 32px; }
+            .method .m-title { font-size: 14px; }
+            .method .m-steps { font-size: 13px; }
+            
+            /* MOBILE GRID – Fluid responsive sizing */
+            .game-area { flex-direction: column; gap: 16px; }
+            .grid-wrap { 
+                width: 100%; 
+                min-width: unset;
+                overflow-x: hidden;
+            }
+            .grid {
+                grid-template-columns: repeat(14, 1fr);
+                gap: 1px;
+                width: 100%;
+            }
+            .cell {
+                /* Let 1fr + aspect-ratio handle sizing */
+                font-size: clamp(11px, 3.2vw, 15px);
+                font-weight: 800;
+                border-radius: 3px;
+                border-width: 1px;
+            }
+            
+            .word-bank { 
+                min-width: unset; 
+                max-height: 250px;
+                padding: 14px;
+            }
+            .word-bank h3 { font-size: 15px; }
+            .word-item { font-size: 13px; padding: 6px 10px; }
+            
+            .top-bar { flex-direction: column; align-items: stretch; text-align: center; gap: 8px; padding: 10px 14px; }
+            .timer { font-size: 20px; }
+            .hint-btn { padding: 8px 20px; font-size: 13px; }
+            
+            .sel-indicator { font-size: 14px; padding: 8px 14px; }
+            .progress-row { padding: 10px 14px; }
+            .progress-row .ptxt { font-size: 14px; }
+            .progress-row .ptxt strong { font-size: 18px; }
+            
+            .btn { padding: 11px 24px; font-size: 15px; }
+            
+            .score-summary { padding: 24px 20px; }
+            .score-summary h2 { font-size: 22px; }
+            .score-summary .stats { grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+            .score-summary .stat-box { padding: 10px 8px; }
+            .score-summary .stat-box .num { font-size: 24px; }
+            .score-summary .stars { font-size: 36px; }
+            .score-summary .final-badge { font-size: 16px; padding: 8px 20px; }
+            .score-summary .message, .score-summary .motivation { font-size: 14px; padding: 14px 16px; }
+            
+            .sound-toggle { top: 10px; right: 10px; padding: 10px 14px; font-size: 12px; }
+            
+            .feedback-table { font-size: 12px; }
+            .feedback-table th, .feedback-table td { padding: 10px 12px; }
+            .takeaway-box { padding: 16px 18px; font-size: 14px; }
         }
-        @media(max-width:420px){.cell{width:24px;height:24px;font-size:10px}.grid{gap:1px}}
-        @media print{.btn-row,.reset-overlay,.top-progress,.sound-toggle,.particles,.confetti-box,.score-summary,.feedback-section{display:none!important}body{background:#fff!important;animation:none!important}}
+
+        @media (max-width: 420px) {
+            body { padding: 16px 6px; }
+            .container { padding: 20px 12px; border-radius: 14px; }
+            .header .session-title { font-size: 18px; }
+            .header .activity-type { font-size: 13px; }
+            h1 { font-size: 20px; }
+            .subtitle { font-size: 13px; padding: 8px 12px; }
+            
+            .grid { gap: 1px; }
+            .cell {
+                font-size: clamp(10px, 2.9vw, 13px);
+                font-weight: 800;
+                border-radius: 2px;
+            }
+            
+            .word-item { font-size: 12px; padding: 5px 8px; gap: 6px; }
+            .word-item .icon { font-size: 14px; }
+            
+            .btn { padding: 10px 20px; font-size: 14px; }
+            
+            .score-summary .stats { grid-template-columns: 1fr; gap: 6px; }
+        }
+
+        @media print { .btn-row,.reset-overlay,.top-progress,.sound-toggle,.particles,.confetti-box,.score-summary,.feedback-section { display: none !important; } body { background: #fff !important; animation: none !important; } }
     </style>
 </head>
 <body>
@@ -262,7 +364,7 @@
                     <strong>Step 1:</strong> Tap the <strong>first letter</strong> of the word (it turns gold)<br/>
                     <strong>Step 2:</strong> Tap the <strong>last letter</strong> of the word<br/>
                     The game draws the line between them automatically!<br/>
-                    <em>Letters shared between words can be tapped again for the next word.</em>
+                    <em>Letters shared between words can be tapped again.</em>
                 </div>
             </div>
         </div>
@@ -272,13 +374,12 @@
                 <div class="m-title">Method 2: Click & Drag <span class="m-badge desktop">💻 Best for Desktop</span></div>
                 <div class="m-steps">
                     <strong>Step 1:</strong> Click and hold the <strong>first letter</strong><br/>
-                    <strong>Step 2:</strong> Drag to the <strong>last letter</strong> and release<br/>
-                    Works with mouse or trackpad.
+                    <strong>Step 2:</strong> Drag to the <strong>last letter</strong> and release
                 </div>
             </div>
         </div>
         <div class="rules">
-            <strong>📏 Rules:</strong> Words go <strong>across →</strong> or <strong>down ↓</strong> only (no diagonals). Words <strong>share letters</strong> at intersections — a letter can belong to two words. 💡 Hint adds 10 seconds. Find all <strong>16 words</strong> to win!
+            <strong>📏 Rules:</strong> Words go <strong>across →</strong> or <strong>down ↓</strong> only (no diagonals). Words <strong>share letters</strong> at intersections. 💡 Hint adds 10 seconds. Find all <strong>16 words</strong> to win!
         </div>
     </div>
 
@@ -306,14 +407,12 @@
         <button class="btn btn-s" id="clrBtn">🧹 Clear Selection</button>
     </div>
 
-    <!-- Inline Feedback -->
     <div class="feedback-section" id="feedbackSection">
         <h3 id="feedbackTitle">📊 Your Results</h3>
         <table class="feedback-table" id="feedbackTable"></table>
         <div class="takeaway-box" id="takeawayBox"></div>
     </div>
 
-    <!-- Inline Score Summary -->
     <div class="score-summary" id="scoreSummary">
         <span class="big-emoji" id="scoreEmoji">🎉</span>
         <h2 id="scoreTitle">Well Done!</h2>
@@ -321,20 +420,19 @@
         <div class="time-display" id="scoreTime">0s</div>
         <div class="stats">
             <div class="stat-box"><div class="num" id="scoreFound">0</div><div class="label">✅ Found</div></div>
-            <div class="stat-box"><div class="num" id="scoreHints">0</div><div class="label">💡 Hints Used</div></div>
+            <div class="stat-box"><div class="num" id="scoreHints">0</div><div class="label">💡 Hints</div></div>
             <div class="stat-box"><div class="num" id="scoreAccuracy">100%</div><div class="label">🎯 Accuracy</div></div>
         </div>
         <div class="stars" id="scoreStars">⭐⭐⭐</div>
         <div class="final-badge" id="scoreBadge">🥇 Gold</div>
         <div class="message" id="scoreMessage"></div>
         <div class="motivation" id="scoreMotivation"></div>
-        <button class="play-again-inline" id="scorePlayAgainBtn">🔄 Play Again (New Puzzle)</button>
+        <button class="play-again-inline" id="scorePlayAgainBtn">🔄 Play Again</button>
     </div>
 
     <div class="confetti-box" id="confBox"></div>
 </div>
 
-<!-- Reset Dialog -->
 <div class="reset-overlay" id="resetOverlay">
     <div class="reset-dialog">
         <h3>🔄 New Puzzle?</h3>
@@ -347,7 +445,6 @@
 </div>
 
 <script>
-// Audio
 class AudioSys {
     constructor(){this.on=true;this.ctx=null;this.m=null;this.init();}
     init(){try{this.ctx=new(window.AudioContext||window.webkitAudioContext)();this.m=this.ctx.createGain();this.m.gain.value=0.08;this.m.connect(this.ctx.destination);this.ambient();}catch(e){this.on=false;}}
@@ -363,14 +460,13 @@ const audio=new AudioSys();
 window.addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-document.documentElement.clientHeight;document.getElementById('topFill').style.width=(document.documentElement.scrollTop/h*100)+'%';});
 document.getElementById('soundToggle').addEventListener('click',function(){this.textContent=audio.toggle()?'🔊 Sound: ON':'🔇 Sound: OFF';});
 
-// Words
 const WORDS=[
     {w:'PESTLE',i:'🏢'},{w:'MACRO',i:'🏢'},{w:'MESO',i:'🏢'},{w:'MICRO',i:'🏢'},
     {w:'VALUE',i:'💰'},{w:'TRANSFORMATION',i:'🔄'},{w:'STAKEHOLDER',i:'👥'},{w:'INTERNAL',i:'🏢'},
     {w:'EXTERNAL',i:'🌍'},{w:'UNCERTAINTY',i:'❓'},{w:'DYNAMIC',i:'⚡'},{w:'COMPLEX',i:'🌀'},
     {w:'POWER',i:'💪'},{w:'INTEREST',i:'❤️'},{w:'MENDELOW',i:'📊'},{w:'MATRIX',i:'📋'}
 ];
-const GS=16;
+const GS=14; // 14x14 grid - fits perfectly on mobile
 let G=[],placed=[],found=[],sel=false,start=null,hl=[],done=false,secs=0,tInt=null,started=false,hinting=false,firstTap=null,hintsUsed=0;
 
 const $=id=>document.getElementById(id);
@@ -378,7 +474,6 @@ const gridEl=$('grid'),wlist=$('wlist');
 
 function shuf(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 
-// Grid Generation - H & V ONLY with forced intersections
 function genGrid(){
     G=[];for(let r=0;r<GS;r++){G[r]=[];for(let c=0;c<GS;c++)G[r][c]='';}
     placed=[];
@@ -397,7 +492,7 @@ function genGrid(){
             if(indices.length===0)continue;
             const pick=indices[Math.floor(Math.random()*indices.length)];
             const si=pick[0],ti=pick[1];
-            const nd=target.d[0]===0?[1,0]:[0,1]; // perpendicular
+            const nd=target.d[0]===0?[1,0]:[0,1];
             const tR=target.r+target.d[0]*ti,tC=target.c+target.d[1]*ti;
             const sR=tR-nd[0]*si,sC=tC-nd[1]*si;
             let fits=true;
@@ -436,7 +531,6 @@ function render(){
     updProg();updBank();
 }
 
-// Single touch handler on grid (bulletproof mobile)
 gridEl.addEventListener('touchstart',function(e){
     e.preventDefault();if(done)return;if(!started)startTimer();
     const touch=e.touches[0];const el=document.elementFromPoint(touch.clientX,touch.clientY);
@@ -446,7 +540,6 @@ gridEl.addEventListener('touchstart',function(e){
 gridEl.addEventListener('touchend',e=>e.preventDefault(),{passive:false});
 gridEl.addEventListener('touchmove',e=>e.preventDefault(),{passive:false});
 
-// Tap-Tap Mode
 function handleTap(r,c){
     const cl=gc(r,c);if(!cl||cl.classList.contains('faded'))return;
     if(!firstTap){firstTap={r,c};cl.classList.add('first-tap');$('selIndicator').classList.add('show');}
@@ -492,10 +585,8 @@ function endSel(){
 
 function clrHL(){hl.forEach(p=>{const cl=gc(p.r,p.c);if(cl)cl.classList.remove('selecting');});hl=[];document.querySelectorAll('.cell.first-tap').forEach(c=>c.classList.remove('first-tap'));firstTap=null;$('selIndicator').classList.remove('show');}
 
-// Hint
 function hint(){if(hinting||done)return;const uf=WORDS.filter(wd=>!found.includes(wd.w));if(!uf.length)return;const rw=uf[Math.floor(Math.random()*uf.length)];const pl=placed.find(p=>p.w===rw.w);if(!pl)return;hinting=true;$('hintBtn').disabled=true;$('hintLabel').textContent='Showing: '+rw.w;const cells=[];for(let k=0;k<pl.w.length;k++){const cl=gc(pl.r+pl.d[0]*k,pl.c+pl.d[1]*k);if(cl)cells.push(cl);}let n=0;const iv=setInterval(()=>{cells.forEach(c=>c.classList.toggle('hint-flash'));n++;if(n>=10){clearInterval(iv);cells.forEach(c=>c.classList.remove('hint-flash'));hinting=false;$('hintBtn').disabled=false;$('hintLabel').textContent='';secs+=10;$('timer').textContent=secs+'s';hintsUsed++;}},300);}
 
-// Reveal mode
 function revealAndComplete(){
     const foundCells=new Set();found.forEach(w=>{const p=placed.find(x=>x.w===w);if(p)for(let k=0;k<p.w.length;k++)foundCells.add((p.r+p.d[0]*k)+','+(p.c+p.d[1]*k));});
     const allCells=gridEl.querySelectorAll('.cell');let delay=0;
@@ -504,7 +595,6 @@ function revealAndComplete(){
     setTimeout(()=>{showFeedback();showDone();},delay+1200);
 }
 
-// Inline feedback
 function showFeedback(){
     let rows='';const colours=['#2ECC71','#27AE60','#1E8449','#196F3D','#2980B9','#2471A3','#1A5276','#154360','#1ABC9C','#17A589','#148F77','#0E6655','#3498DB','#2E86C1','#2874A6','#21618C'];
     found.forEach((w,i)=>{const wd=WORDS.find(x=>x.w===w);rows+=`<tr><td><span class="swatch" style="background:${colours[i]}"></span><strong>${w}</strong></td><td>${wd.i}</td><td>✅ Found</td></tr>`;});
@@ -523,7 +613,7 @@ function showDone(){
     $('scoreEmoji').textContent=emoji;$('scoreTitle').textContent=title;$('scoreSub').textContent=sub;
     $('scoreTime').textContent=t+'s';$('scoreFound').textContent='16';$('scoreHints').textContent=hintsUsed;$('scoreAccuracy').textContent='100%';
     $('scoreStars').textContent=stars;$('scoreBadge').textContent=badge;$('scoreBadge').className='final-badge '+bClass;
-    $('scoreMessage').innerHTML='You just found and reinforced <strong>16 essential business terms</strong> — from <strong>PESTLE</strong> to <strong>MENDELOW</strong>, from <strong>STAKEHOLDER</strong> to <strong>TRANSFORMATION</strong>. These are not just words on a grid. They are the language you will use in every report, every presentation, and every conversation throughout your career.';
+    $('scoreMessage').innerHTML='You just found and reinforced <strong>16 essential business terms</strong> — from <strong>PESTLE</strong> to <strong>MENDELOW</strong>, from <strong>STAKEHOLDER</strong> to <strong>TRANSFORMATION</strong>. These are the language of your future career.';
     $('scoreMotivation').innerHTML='🌟 <strong>Keep building your business vocabulary.</strong><br/>Every term you learn today is a tool you will carry for life.<br/>Read business news. Use these words in your assignments. Speak them with confidence.<br/><strong>Your future self will thank you.</strong>';
     $('scoreSummary').classList.add('show');
     audio.complete();confetti();setTimeout(confetti,500);setTimeout(confetti,1000);
@@ -551,7 +641,7 @@ $('ovNo').addEventListener('click',()=>$('resetOverlay').classList.remove('show'
 $('resetOverlay').addEventListener('click',e=>{if(e.target===$('resetOverlay'))$('resetOverlay').classList.remove('show');});
 
 genGrid();render();
-console.log('✅ Word Search ENHANCED – H&V only, forced intersections, tap-tap, reveal mode, full signature!');
+console.log('✅ Word Search – Mobile-responsive grid (14x14, fluid sizing), no overflow!');
 </script>
 </body>
 </html>
