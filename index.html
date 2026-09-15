@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1244,6 +1243,14 @@ h1 {
 </footer>
 
 <script>
+/* ============================================================
+   16 TERMS — Sessions 1 & 2 vocabulary with diverse UK examples
+   Grouped into 4 themes:
+     g1 = Frameworks (navy)
+     g2 = Environment (light navy)
+     g3 = Stakeholders (gold)
+     g4 = Value (green)
+   ============================================================ */
 const WORDS = [
     { w: 'PESTLE', i: '🏢', g: 'g1', theme: 'Frameworks',
       def: 'A strategic tool analysing six external factors: Political, Economic, Social, Technological, Legal, Environmental.',
@@ -1456,7 +1463,7 @@ function genGrid() {
         }
     }
 
-    // ★ BLACK BOXES — 5.5% density (safe for long words) - PRESERVED
+    // ★ BLACK BOXES — 5.5% density (safe for long words) — KEPT EXACTLY AS ORIGINAL
     const bc = Math.floor(GS * GS * 0.055);
     const pos = [];
     for (let r = 0; r < GS; r++) for (let c = 0; c < GS; c++) pos.push([r, c]);
@@ -1535,11 +1542,19 @@ gridEl.addEventListener('touchstart', function (e) {
 gridEl.addEventListener('touchend', e => e.preventDefault(), { passive: false });
 gridEl.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
 
+/* ★ FIX: sweep any stray gold highlight so it can never get stuck */
+function sweepGold() {
+    document.querySelectorAll('.cell.selecting').forEach(x => x.classList.remove('selecting'));
+    document.querySelectorAll('.cell.first-tap').forEach(x => x.classList.remove('first-tap'));
+}
+
 function handleTap(r, c) {
     const cl = gc(r, c);
     if (!cl || cl.classList.contains('black') || cl.classList.contains('faded')) return;
 
     if (!firstTap) {
+        sweepGold();
+        hl = [];
         firstTap = { r, c };
         cl.classList.add('first-tap');
         $('selIndicator').classList.add('show');
@@ -1557,6 +1572,8 @@ function handleTap(r, c) {
         else if (dc === 0 && dr !== 0) dir = [dr > 0 ? 1 : -1, 0];
 
         if (!dir) {
+            sweepGold();
+            hl = [];
             firstTap = { r, c };
             cl.classList.add('first-tap');
             $('selIndicator').classList.add('show');
@@ -1643,6 +1660,8 @@ function updProg() {
 }
 
 function beginSel(r, c) {
+    sweepGold();
+    hl = [];
     sel = true;
     start = { r, c };
     hl = [{ r, c }];
@@ -1729,13 +1748,10 @@ function endSel() {
     }
 }
 
+/* ★ FIX: bulletproof clear — removes EVERY gold highlight on the board */
 function clrHL() {
-    hl.forEach(p => {
-        const cl = gc(p.r, p.c);
-        if (cl) cl.classList.remove('selecting');
-    });
+    sweepGold();
     hl = [];
-    document.querySelectorAll('.cell.first-tap').forEach(c => c.classList.remove('first-tap'));
     firstTap = null;
     $('selIndicator').classList.remove('show');
 }
@@ -1939,6 +1955,7 @@ function showMsg(t, c) {
 }
 function hideMsg() { $('msg').className = 'msg'; }
 
+/* ★ FIX: New Puzzle — uses the custom dialog (no browser confirm) */
 function newGame() {
     if (found.length > 0 && found.length < WORDS.length) {
         $('resetTitle').textContent = '🔄 New Puzzle?';
@@ -1956,8 +1973,12 @@ function doReset() {
     firstTap = null;
     hintsUsed = 0;
     wrongAttempts = 0;
+    sel = false;
+    start = null;
+    hl = [];
     resetTimer();
     hideMsg();
+    sweepGold();
     $('defPopup').classList.remove('show');
     $('scoreSummary').classList.remove('show');
     $('feedbackSection').classList.remove('show');
@@ -1971,16 +1992,15 @@ function doReset() {
 }
 
 /* ============================================================
-   SAVE AS WORD — FIXED VERSION
+   ★ FIX: SAVE AS WORD — rebuilt safely, always downloads
    ============================================================ */
 function saveAsWord() {
     var rows = '';
     WORDS.forEach(function(wd) {
         var isFound = found.indexOf(wd.w) !== -1 ? '✅ Found' : '⏳ Not found';
-        var themeName = GROUP_LABELS[wd.g].name;
         rows += '<tr>';
         rows += '<td><strong>' + wd.i + ' ' + wd.w + '</strong></td>';
-        rows += '<td>' + themeName + '</td>';
+        rows += '<td>' + wd.theme + '</td>';
         rows += '<td>' + wd.def + '</td>';
         rows += '<td>' + wd.exBiz + '</td>';
         rows += '<td>' + wd.exHealth + '</td>';
@@ -1994,34 +2014,29 @@ function saveAsWord() {
     html += '<html xmlns:o="urn:schemas-microsoft-com:office:office" ';
     html += 'xmlns:w="urn:schemas-microsoft-com:office:word" ';
     html += 'xmlns="http://www.w3.org/TR/REC-html40">';
-    html += '<head>';
-    html += '<meta charset="utf-8">';
-    html += '<title>BMA4000-20 Sessions 1-2 Vocabulary</title>';
+    html += '<head><meta charset="utf-8"><title>BMA4000-20 Sessions 1-2 Vocabulary</title>';
     html += '<style>';
-    html += 'body { font-family: Calibri, Arial, sans-serif; color: #222; font-size: 11pt; line-height: 1.5; }';
+    html += 'body { font-family: Calibri, Arial, sans-serif; color: #222; font-size: 11pt; }';
     html += '.header { background: #003366; color: #fff; padding: 20px; text-align: center; }';
     html += '.header h1 { color: #fff; margin: 0; font-size: 18pt; }';
     html += '.header p { margin: 6px 0 0 0; opacity: 0.9; font-size: 10pt; }';
     html += 'h2 { color: #003366; border-bottom: 3px solid #c8a415; padding-bottom: 6px; font-size: 14pt; margin-top: 22px; }';
     html += '.summary { background: #f4f7fa; padding: 14px; border-left: 5px solid #003366; margin: 14px 0; }';
     html += '.summary p { margin: 5px 0; font-size: 11pt; }';
-    html += 'table { border-collapse: collapse; width: 100%; margin-top: 12px; font-size: 9.5pt; }';
-    html += 'th { background: #003366; color: #fff; padding: 8px; text-align: left; font-size: 9.5pt; }';
+    html += 'table { border-collapse: collapse; width: 100%; margin-top: 12px; font-size: 10pt; }';
+    html += 'th { background: #003366; color: #fff; padding: 8px; text-align: left; font-size: 10pt; }';
     html += 'td { border: 1px solid #ccc; padding: 8px; vertical-align: top; }';
     html += '.footer { margin-top: 26px; padding: 14px; background: #003366; color: #fff; text-align: center; font-size: 9.5pt; }';
     html += '.footer a { color: #c8a415; }';
-    html += 'ul, ol { margin: 10px 0 10px 20px; }';
-    html += 'li { margin-bottom: 6px; }';
-    html += '</style>';
-    html += '</head>';
-    html += '<body>';
+    html += 'ul, ol { margin: 10px 0 10px 20px; } li { margin-bottom: 6px; }';
+    html += '</style></head><body>';
 
     html += '<div class="header">';
     html += '<h1>BMA4000-20 · Sessions 1 &amp; 2: Key Business Terms</h1>';
     html += '<p>Vocabulary Booster — Foundations of Business Analysis</p>';
     html += '</div>';
 
-    html += '<h2>📊 Your Results</h2>';
+    html += '<h2>Your Results</h2>';
     html += '<div class="summary">';
     html += '<p><strong>Terms found:</strong> ' + found.length + ' / ' + WORDS.length + '</p>';
     html += '<p><strong>Time taken:</strong> ' + secs + 's</p>';
@@ -2029,20 +2044,13 @@ function saveAsWord() {
     html += '<p><strong>Accuracy:</strong> ' + accuracy + '%</p>';
     html += '</div>';
 
-    html += '<h2>📖 Your 16 Business Terms — Full Glossary</h2>';
+    html += '<h2>Your 16 Business Terms — Full Glossary</h2>';
     html += '<table>';
-    html += '<tr>';
-    html += '<th>Term</th>';
-    html += '<th>Theme</th>';
-    html += '<th>Definition</th>';
-    html += '<th>UK Business Example</th>';
-    html += '<th>Health &amp; Social Care Example</th>';
-    html += '<th>Status</th>';
-    html += '</tr>';
+    html += '<tr><th>Term</th><th>Theme</th><th>Definition</th><th>UK Business Example</th><th>Health &amp; Social Care Example</th><th>Status</th></tr>';
     html += rows;
     html += '</table>';
 
-    html += '<h2>🔑 Key Takeaways</h2>';
+    html += '<h2>Key Takeaways</h2>';
     html += '<ul>';
     html += '<li><strong>Frameworks</strong> — PESTLE, MACRO, MESO, MICRO — analyse the environment at every level.</li>';
     html += '<li><strong>Environment</strong> — INTERNAL, EXTERNAL, UNCERTAINTY, DYNAMIC, COMPLEX — describe how environments differ.</li>';
@@ -2051,23 +2059,21 @@ function saveAsWord() {
     html += '<li>Use these terms in your Integrated Professional Analysis — with <strong>evidence</strong> and <strong>Harvard references</strong>.</li>';
     html += '</ul>';
 
-    html += '<h2>📚 Sources (Harvard Referencing)</h2>';
+    html += '<h2>Sources (Harvard Referencing)</h2>';
     html += '<ol>';
     html += '<li>Bath Spa University (2026) <em>BMA4000-20 Module Handbook</em>. Available at: BSU Ultra (Accessed: 15 September 2026).</li>';
     html += '<li>Johnson, G., Whittington, R., Scholes, K., Angwin, D. and Regnér, P. (2020) <em>Exploring Strategy</em>. 12th edn. Harlow: Pearson.</li>';
     html += '<li>Mendelow, A. (1981) \'Environmental Scanning: The Impact of the Stakeholder Concept\', <em>Proceedings of the Second International Conference on Information Systems</em>, Cambridge, MA, pp. 407–418.</li>';
     html += '<li>Morrison, J. (2020) <em>The Global Business Environment</em>. 5th edn. Basingstoke: Palgrave Macmillan.</li>';
     html += '<li>Office for National Statistics (2024) <em>UK Business Statistics</em>. Available at: https://www.ons.gov.uk (Accessed: 15 September 2026).</li>';
-    html += '<li>PESTLE Analysis (2024) <em>PESTLE Analysis Template</em>. Available at: https://pestleanalysis.com (Accessed: 15 September 2026).</li>';
     html += '</ol>';
 
     html += '<div class="footer">';
-    html += 'Designed for Interactive &amp; Sustainable Learning 🌱 | Bath Spa University – Hackney Campus<br>';
+    html += 'Designed for Interactive &amp; Sustainable Learning | Bath Spa University – Hackney Campus<br>';
     html += 'Module Leader: Mohammed Hbubati | Email: m.hbubati@bathspa.ac.uk';
     html += '</div>';
 
-    html += '</body>';
-    html += '</html>';
+    html += '</body></html>';
 
     try {
         var blob = new Blob(['\ufeff', html], { type: 'application/msword' });
@@ -2078,20 +2084,19 @@ function saveAsWord() {
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-        setTimeout(function() {
-            URL.revokeObjectURL(url);
-        }, 100);
+        setTimeout(function() { URL.revokeObjectURL(url); }, 500);
+        showMsg('✅ Word document downloaded!', 'ok');
     } catch (e) {
-        alert('Error saving file. Please try again.');
+        showMsg('⚠️ Could not save — please try again.', 'err');
         console.error('Save error:', e);
     }
 }
 
-var audio = {
+const audio = {
     on: true,
     ctx: null,
     m: null,
-    init: function() {
+    init() {
         try {
             this.ctx = new (window.AudioContext || window.webkitAudioContext)();
             this.m = this.ctx.createGain();
@@ -2100,125 +2105,96 @@ var audio = {
             this.ambient();
         } catch (e) { this.on = false; }
     },
-    ambient: function() {
+    ambient() {
         if (!this.ctx || !this.on) return;
-        var freqs = [130.81, 164.81, 196, 261.63];
-        var self = this;
-        freqs.forEach(function(f, i) {
-            var o = self.ctx.createOscillator();
-            var g = self.ctx.createGain();
-            var fl = self.ctx.createBiquadFilter();
+        [130.81, 164.81, 196, 261.63].forEach((f, i) => {
+            const o = this.ctx.createOscillator(), g = this.ctx.createGain(), fl = this.ctx.createBiquadFilter();
             o.type = 'sine';
             o.frequency.value = f;
             fl.type = 'lowpass';
             fl.frequency.value = 800;
-            g.gain.setValueAtTime(0, self.ctx.currentTime);
-            g.gain.linearRampToValueAtTime(0.12, self.ctx.currentTime + 3);
-            var l = self.ctx.createOscillator();
-            var lg = self.ctx.createGain();
+            g.gain.setValueAtTime(0, this.ctx.currentTime);
+            g.gain.linearRampToValueAtTime(0.08, this.ctx.currentTime + 3);
+            const l = this.ctx.createOscillator(), lg = this.ctx.createGain();
             l.frequency.value = 0.1 + i * 0.05;
             lg.gain.value = 2;
-            l.connect(lg);
-            lg.connect(o.frequency);
-            l.start();
-            o.connect(fl);
-            fl.connect(g);
-            g.connect(self.m);
+            l.connect(lg); lg.connect(o.frequency); l.start();
+            o.connect(fl); fl.connect(g); g.connect(this.m);
             o.start();
         });
     },
-    found: function() {
+    found() {
         if (!this.ctx || !this.on) return;
-        var n = this.ctx.currentTime;
-        var self = this;
-        [523.25, 659.25, 783.99].forEach(function(f, i) {
-            var o = self.ctx.createOscillator();
-            var g = self.ctx.createGain();
-            o.type = 'sine';
-            o.frequency.value = f;
+        const n = this.ctx.currentTime;
+        [523.25, 659.25, 783.99].forEach((f, i) => {
+            const o = this.ctx.createOscillator(), g = this.ctx.createGain();
+            o.type = 'sine'; o.frequency.value = f;
             g.gain.setValueAtTime(0, n + i * 0.08);
-            g.gain.linearRampToValueAtTime(0.18, n + i * 0.08 + 0.04);
+            g.gain.linearRampToValueAtTime(0.2, n + i * 0.08 + 0.04);
             g.gain.exponentialRampToValueAtTime(0.01, n + i * 0.08 + 0.25);
-            o.connect(g);
-            g.connect(self.m);
-            o.start(n + i * 0.08);
-            o.stop(n + i * 0.08 + 0.25);
+            o.connect(g); g.connect(this.m);
+            o.start(n + i * 0.08); o.stop(n + i * 0.08 + 0.25);
         });
     },
-    wrong: function() {
+    wrong() {
         if (!this.ctx || !this.on) return;
-        var n = this.ctx.currentTime;
-        var o = self.ctx.createOscillator();
-        var g = self.ctx.createGain();
+        const n = this.ctx.currentTime;
+        const o = this.ctx.createOscillator(), g = this.ctx.createGain();
         o.type = 'triangle';
         o.frequency.setValueAtTime(250, n);
         o.frequency.exponentialRampToValueAtTime(150, n + 0.2);
-        g.gain.setValueAtTime(0.1, n);
+        g.gain.setValueAtTime(0.12, n);
         g.gain.exponentialRampToValueAtTime(0.01, n + 0.2);
-        o.connect(g);
-        g.connect(this.m);
-        o.start(n);
-        o.stop(n + 0.2);
+        o.connect(g); g.connect(this.m);
+        o.start(n); o.stop(n + 0.2);
     },
-    complete: function() {
+    complete() {
         if (!this.ctx || !this.on) return;
-        var n = this.ctx.currentTime;
-        var self = this;
-        [523.25, 659.25, 783.99, 1046.5, 1318.51].forEach(function(f, i) {
-            var o = self.ctx.createOscillator();
-            var g = self.ctx.createGain();
-            o.type = 'sine';
-            o.frequency.value = f;
+        const n = this.ctx.currentTime;
+        [523.25, 659.25, 783.99, 1046.5, 1318.51].forEach((f, i) => {
+            const o = this.ctx.createOscillator(), g = this.ctx.createGain();
+            o.type = 'sine'; o.frequency.value = f;
             g.gain.setValueAtTime(0, n + i * 0.12);
-            g.gain.linearRampToValueAtTime(0.22, n + i * 0.12 + 0.05);
+            g.gain.linearRampToValueAtTime(0.25, n + i * 0.12 + 0.05);
             g.gain.exponentialRampToValueAtTime(0.01, n + i * 0.12 + 0.5);
-            o.connect(g);
-            g.connect(self.m);
-            o.start(n + i * 0.12);
-            o.stop(n + i * 0.12 + 0.5);
+            o.connect(g); g.connect(this.m);
+            o.start(n + i * 0.12); o.stop(n + i * 0.12 + 0.5);
         });
     },
-    toggle: function() {
+    toggle() {
         this.on = !this.on;
-        if (this.m) {
-            this.m.gain.linearRampToValueAtTime(this.on ? 0.08 : 0, this.ctx.currentTime + 0.5);
-        }
-        try {
-            localStorage.setItem('s12_sound', this.on ? 'on' : 'off');
-        } catch(e) {}
+        if (this.m) this.m.gain.linearRampToValueAtTime(this.on ? 0.08 : 0, this.ctx.currentTime + 0.5);
         return this.on;
     }
 };
 audio.init();
 
 (function () {
-    var c = $('particles');
-    for (var i = 0; i < 22; i++) {
-        var p = document.createElement('div');
+    const c = $('particles');
+    for (let i = 0; i < 25; i++) {
+        const p = document.createElement('div');
         p.className = 'particle';
         p.style.left = Math.random() * 100 + '%';
         p.style.animationDuration = (15 + Math.random() * 20) + 's';
         p.style.animationDelay = Math.random() * 10 + 's';
-        var s = 2 + Math.random() * 4;
+        const s = 2 + Math.random() * 4;
         p.style.width = p.style.height = s + 'px';
         c.appendChild(p);
     }
 })();
 
-window.addEventListener('scroll', function() {
-    var h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    if (h > 0) {
-        $('topFill').style.width = (document.documentElement.scrollTop / h * 100) + '%';
-    }
+window.addEventListener('scroll', () => {
+    const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    if (h > 0) $('topFill').style.width = (document.documentElement.scrollTop / h * 100) + '%';
 });
 
 $('soundToggle').addEventListener('click', function () {
-    var on = audio.toggle();
+    const on = audio.toggle();
     this.textContent = on ? '🔊 Sound' : '🔇 Sound';
 });
 
 $('themeToggle').addEventListener('click', function () {
-    var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
     if (isLight) {
         document.documentElement.removeAttribute('data-theme');
         this.textContent = '🌙 Theme';
@@ -2236,18 +2212,13 @@ $('themeToggle').addEventListener('click', function () {
             document.documentElement.setAttribute('data-theme', 'light');
             $('themeToggle').textContent = '☀️ Theme';
         }
-        if (localStorage.getItem('s12_sound') === 'off') {
-            audio.on = false;
-            if (audio.m) audio.m.gain.value = 0;
-            $('soundToggle').textContent = '🔇 Sound';
-        }
     } catch (e) {}
 })();
 
-document.addEventListener('mouseup', function() { if (sel) endSel(); });
+document.addEventListener('mouseup', () => { if (sel) endSel(); });
 
 $('newBtn').addEventListener('click', newGame);
-$('clrBtn').addEventListener('click', function() {
+$('clrBtn').addEventListener('click', () => {
     clrHL();
     sel = false;
     start = null;
@@ -2255,15 +2226,18 @@ $('clrBtn').addEventListener('click', function() {
 });
 $('hintBtn').addEventListener('click', hint);
 $('saveBtn').addEventListener('click', saveAsWord);
-$('resetAnsBtn').addEventListener('click', function() {
+
+/* ★ FIX: Reset Answers — custom dialog instead of browser confirm() */
+$('resetAnsBtn').addEventListener('click', () => {
     $('resetTitle').textContent = '🔄 Reset Answers?';
     $('resetMsg').textContent = 'The grid will restart with new positions. Your current progress will be lost.';
     $('resetOverlay').classList.add('show');
 });
+
 $('scorePlayAgainBtn').addEventListener('click', doReset);
 $('ovYes').addEventListener('click', doReset);
-$('ovNo').addEventListener('click', function() { $('resetOverlay').classList.remove('show'); });
-$('resetOverlay').addEventListener('click', function(e) {
+$('ovNo').addEventListener('click', () => $('resetOverlay').classList.remove('show'));
+$('resetOverlay').addEventListener('click', e => {
     if (e.target === $('resetOverlay')) $('resetOverlay').classList.remove('show');
 });
 
