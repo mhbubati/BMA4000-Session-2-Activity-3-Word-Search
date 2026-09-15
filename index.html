@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
 <meta name="theme-color" content="#003366">
-<title>BMA4000-20 | Session 8 | Vocabulary Booster — Economic · Legal · Technological</title>
+<title>BMA4000-20 | Sessions 1 & 2 | Vocabulary Booster — Business Foundations</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -18,22 +18,15 @@
     --bsu-white: #FFFFFF;
     --bsu-light: #f4f7fc;
 
-    --economic: #c8a415;
-    --legal: #C62828;
-    --tech: #1a4d80;
+    --g1: #003366;
+    --g2: #1a4d80;
+    --g3: #c8a415;
+    --g4: #2E7D32;
 
     --green1: #2ECC71;
     --green2: #27AE60;
     --blue1: #2980B9;
     --blue2: #1A5276;
-
-    --bg-primary: #0a1729;
-    --bg-secondary: #0f2340;
-    --text-primary: #FFFFFF;
-    --text-secondary: #E0E6ED;
-    --text-muted: #8FA3C0;
-    --border-color: rgba(255, 255, 255, 0.15);
-    --shadow-color: rgba(0, 0, 0, 0.5);
 
     --font-family: 'Segoe UI', 'Roboto', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
     --touch-target: 44px;
@@ -41,13 +34,7 @@
 }
 
 [data-theme="light"] {
-    --bg-primary: #f4f7fc;
-    --bg-secondary: #FFFFFF;
-    --text-primary: #003366;
-    --text-secondary: #1a4d80;
-    --text-muted: #5A7090;
-    --border-color: rgba(0, 51, 102, 0.15);
-    --shadow-color: rgba(0, 51, 102, 0.12);
+    --bsu-light: #f4f7fc;
 }
 
 html {
@@ -59,20 +46,26 @@ html {
 body {
     font-family: var(--font-family);
     background: linear-gradient(135deg, #0a1729 0%, #003366 50%, #001a33 100%);
+    background-size: 400% 400%;
+    animation: gradShift 20s ease infinite;
     background-attachment: fixed;
     min-height: 100vh;
     min-height: 100dvh;
     padding: 20px 12px 40px;
-    color: var(--text-primary);
+    color: #1e2e3f;
     line-height: 1.6;
     -webkit-tap-highlight-color: rgba(200, 164, 21, 0.2);
     position: relative;
     overflow-x: hidden;
 }
+@keyframes gradShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
 
 [data-theme="light"] body {
     background: linear-gradient(135deg, #f4f7fc 0%, #e0e8f2 50%, #d8e4f0 100%);
-    color: var(--text-primary);
+    background-attachment: fixed;
 }
 
 .particles {
@@ -83,7 +76,7 @@ body {
 .particle {
     position: absolute;
     width: 4px; height: 4px;
-    background: rgba(200, 164, 21, 0.35);
+    background: rgba(200, 164, 21, 0.4);
     border-radius: 50%;
     animation: floatP linear infinite;
 }
@@ -236,19 +229,8 @@ h1 {
     padding-top: 12px;
     border-top: 1px dashed rgba(0, 51, 102, 0.2);
 }
-.session7-reminder {
-    margin-top: 14px;
-    padding: 14px 18px;
-    background: linear-gradient(135deg, #fff8e1, #fffde7);
-    border-radius: 10px;
-    border-left: 4px solid var(--bsu-gold);
-    font-size: 14px;
-    color: #5a4500;
-    line-height: 1.7;
-}
-.session7-reminder strong { color: var(--bsu-navy); }
 
-.env-legend {
+.group-legend {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
@@ -258,7 +240,7 @@ h1 {
     border-radius: 10px;
     border: 1px solid #dde1e6;
 }
-.env-legend h4 {
+.group-legend h4 {
     width: 100%;
     font-size: 13px;
     color: var(--bsu-navy);
@@ -266,7 +248,7 @@ h1 {
     letter-spacing: 1.5px;
     margin-bottom: 4px;
 }
-.env-tag {
+.group-tag {
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -276,9 +258,10 @@ h1 {
     font-weight: 700;
     color: white;
 }
-.env-tag.economic { background: linear-gradient(135deg, var(--bsu-gold), var(--bsu-gold-dark)); color: var(--bsu-navy); }
-.env-tag.legal { background: linear-gradient(135deg, #C62828, #8a1c1c); }
-.env-tag.tech { background: linear-gradient(135deg, var(--bsu-navy), var(--bsu-navy-light)); }
+.group-tag.g1 { background: linear-gradient(135deg, #003366, #002244); }
+.group-tag.g2 { background: linear-gradient(135deg, #1a4d80, #003366); }
+.group-tag.g3 { background: linear-gradient(135deg, var(--bsu-gold), var(--bsu-gold-dark)); color: var(--bsu-navy); }
+.group-tag.g4 { background: linear-gradient(135deg, #2E7D32, #1B5E20); }
 
 .instructions {
     background: #f5f7fa;
@@ -468,9 +451,10 @@ h1 {
     border-color: transparent;
     text-shadow: 0 1px 1px rgba(0,0,0,0.2);
 }
-.cell.found.economic { background: var(--bsu-gold); color: var(--bsu-navy) !important; }
-.cell.found.legal { background: var(--legal); }
-.cell.found.tech { background: var(--tech); }
+.cell.found.g1 { background: var(--g1); }
+.cell.found.g2 { background: var(--g2); }
+.cell.found.g3 { background: var(--g3); color: var(--bsu-navy) !important; }
+.cell.found.g4 { background: var(--g4); }
 
 .cell.faded {
     opacity: 0 !important;
@@ -523,9 +507,10 @@ h1 {
     width: 10px; height: 10px; border-radius: 50%;
     display: inline-block;
 }
-.word-group.economic .group-dot { background: var(--bsu-gold); }
-.word-group.legal .group-dot { background: var(--legal); }
-.word-group.tech .group-dot { background: var(--tech); }
+.word-group.g1 .group-dot { background: var(--g1); }
+.word-group.g2 .group-dot { background: var(--g2); }
+.word-group.g3 .group-dot { background: var(--g3); }
+.word-group.g4 .group-dot { background: var(--g4); }
 
 .word-item {
     display: flex;
@@ -546,9 +531,10 @@ h1 {
     text-decoration: line-through;
     border-color: transparent;
 }
-.word-item.found.economic { background: var(--bsu-gold); color: var(--bsu-navy); }
-.word-item.found.legal { background: var(--legal); }
-.word-item.found.tech { background: var(--tech); }
+.word-item.found.g1 { background: var(--g1); }
+.word-item.found.g2 { background: var(--g2); }
+.word-item.found.g3 { background: var(--g3); color: var(--bsu-navy); }
+.word-item.found.g4 { background: var(--g4); }
 .word-item .icon { font-size: 15px; }
 .word-item .txt { flex: 1; }
 .word-item .chk { opacity: 0; transition: opacity 0.2s; }
@@ -567,7 +553,7 @@ h1 {
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
     z-index: 2000;
     max-width: 90vw;
-    width: 480px;
+    width: 500px;
     transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     pointer-events: none;
 }
@@ -630,15 +616,28 @@ h1 {
     background: linear-gradient(90deg, var(--bsu-gold), var(--bsu-gold-light));
     border-radius: 20px;
     transition: width 0.4s;
+    position: relative;
+    overflow: hidden;
+}
+.pbar .pfill::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: shimmer 2s infinite;
+}
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
 }
 
-.env-progress {
+.group-progress {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
     margin-bottom: 12px;
 }
-.env-progress .env-chip {
+.group-progress .group-chip {
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -651,10 +650,11 @@ h1 {
     color: var(--bsu-navy);
     transition: all 0.3s;
 }
-.env-progress .env-chip.economic { border-color: var(--bsu-gold); }
-.env-progress .env-chip.legal { border-color: var(--legal); }
-.env-progress .env-chip.tech { border-color: var(--tech); }
-.env-progress .env-chip.complete {
+.group-progress .group-chip.g1 { border-color: var(--g1); }
+.group-progress .group-chip.g2 { border-color: var(--g2); }
+.group-progress .group-chip.g3 { border-color: var(--g3); }
+.group-progress .group-chip.g4 { border-color: var(--g4); }
+.group-progress .group-chip.complete {
     background: linear-gradient(135deg, #e8f8f0, #d4f5e0);
     border-color: var(--green1);
     color: #1a7a4a;
@@ -729,7 +729,7 @@ h1 {
 .definition-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 13.5px;
+    font-size: 13px;
     background: #fff;
     border-radius: 12px;
     overflow: hidden;
@@ -738,21 +738,21 @@ h1 {
 .definition-table th {
     background: var(--bsu-navy);
     color: white;
-    padding: 12px 14px;
+    padding: 12px 12px;
     text-align: left;
     font-weight: 700;
-    font-size: 13px;
+    font-size: 12.5px;
 }
 .definition-table td {
-    padding: 12px 14px;
+    padding: 12px 12px;
     border-bottom: 1px solid #e6edf5;
     color: #333;
     vertical-align: top;
-    line-height: 1.55;
+    line-height: 1.5;
 }
 .definition-table tr:last-child td { border-bottom: none; }
 .definition-table td strong { color: var(--bsu-navy); }
-.definition-table .env-pill {
+.definition-table .group-pill {
     display: inline-block;
     padding: 2px 10px;
     border-radius: 12px;
@@ -760,9 +760,10 @@ h1 {
     font-weight: 700;
     color: white;
 }
-.definition-table .env-pill.economic { background: var(--bsu-gold); color: var(--bsu-navy); }
-.definition-table .env-pill.legal { background: var(--legal); }
-.definition-table .env-pill.tech { background: var(--tech); }
+.definition-table .group-pill.g1 { background: var(--g1); }
+.definition-table .group-pill.g2 { background: var(--g2); }
+.definition-table .group-pill.g3 { background: var(--g3); color: var(--bsu-navy); }
+.definition-table .group-pill.g4 { background: var(--g4); }
 
 .takeaway-box {
     margin-top: 16px;
@@ -993,10 +994,9 @@ h1 {
     .why-matters h3 { font-size: 15px; }
     .why-matters p, .why-matters ul li { font-size: 13px; }
     .why-matters .closing { font-size: 13px; }
-    .session7-reminder { font-size: 13px; padding: 12px 14px; }
 
-    .env-legend { padding: 12px 14px; }
-    .env-tag { font-size: 12px; padding: 5px 12px; }
+    .group-legend { padding: 12px 14px; }
+    .group-tag { font-size: 12px; padding: 5px 12px; }
 
     .instructions { padding: 14px 16px; }
     .instructions h3 { font-size: 14.5px; }
@@ -1050,8 +1050,8 @@ h1 {
     #soundToggle { right: 8px; }
     #themeToggle { right: 110px; }
 
-    .definition-table { font-size: 12px; }
-    .definition-table th, .definition-table td { padding: 9px 10px; }
+    .definition-table { font-size: 11.5px; }
+    .definition-table th, .definition-table td { padding: 8px 8px; }
     .takeaway-box { padding: 14px 16px; font-size: 13px; }
     .sources-section { padding: 16px 18px; font-size: 12px; }
     .footer { font-size: 12px; padding: 16px 12px; border-radius: 10px; }
@@ -1069,7 +1069,7 @@ h1 {
 }
 
 @media print {
-    body { background: #fff !important; }
+    body { background: #fff !important; animation: none !important; }
     .btn-row, .reset-overlay, .top-progress, .top-btn, .particles,
     .confetti-box, .score-summary, .feedback-section, .hint-btn, .definition-popup {
         display: none !important;
@@ -1095,35 +1095,33 @@ h1 {
 <div class="container">
     <div class="header">
         <div class="module-code">BMA4000-20 | The Business Environment</div>
-        <div class="session-title">Session 8: Assessment Support · Vocabulary Booster</div>
-        <div class="activity-type">🔍 Interactive Word Search – Economic · Legal · Technological Environments</div>
+        <div class="session-title">Sessions 1 &amp; 2: Key Business Terms · Vocabulary Booster</div>
+        <div class="activity-type">🔍 Interactive Word Search – Foundations of Business Analysis</div>
     </div>
 
-    <h1>🔍 Business Environment Word Search</h1>
+    <h1>🔍 Business Foundations Word Search</h1>
     <div class="subtitle">
-        Find <strong>16 key business terms</strong> hidden in the grid. Each word is colour-coded by environment, and every word you find reveals a plain-English definition with a real UK example.
+        Find <strong>16 key business terms</strong> hidden in the grid. Each word is colour-coded by theme, and every word you find reveals a plain-English definition with real UK examples from <strong>business</strong> and <strong>health &amp; social care</strong>.
     </div>
 
     <div class="why-matters">
         <h3>💡 Why This Matters</h3>
-        <p>This is not just a word search — it is a <strong>vocabulary builder</strong> for your Integrated Professional Analysis. These 16 terms from Sessions 5–7 (and previewed for Session 9–10) are the <strong>working language of business analysis</strong>. Mastering them means you can:</p>
+        <p>This is not just a word search — it is a <strong>vocabulary builder</strong> for your future career. These 16 terms from Sessions 1 &amp; 2 are the <strong>foundation language</strong> of business analysis. Mastering them means you can:</p>
         <ul>
-            <li><strong>Analyse</strong> the external environment using the <strong>PESTLE</strong> framework — Political, Economic, Social, Technological, Legal, Environmental</li>
-            <li><strong>Explain</strong> how inflation, interest rates, and recession shape business decisions</li>
-            <li><strong>Discuss</strong> legal compliance, liability, and regulation with confidence</li>
-            <li><strong>Evaluate</strong> digital transformation, innovation, and automation in any sector</li>
+            <li><strong>Analyse</strong> business environments using PESTLE, MACRO, MESO, and MICRO frameworks</li>
+            <li><strong>Map</strong> stakeholders using Mendelow's Matrix (Power × Interest)</li>
+            <li><strong>Classify</strong> uncertainty as Simple/Static, Dynamic, or Complex</li>
+            <li><strong>Discuss</strong> business transformation, value creation, and stakeholder management with confidence</li>
         </ul>
         <p class="closing">"The limits of my language mean the limits of my world." — Ludwig Wittgenstein</p>
-        <div class="session7-reminder">
-            💡 <strong>Session 7 reminder:</strong> <em>CHASM</em> and <em>DIFFUSION</em> come from Moore's and Rogers' theories — the two adoption models we covered in Session 7. If you missed that session, review it — they're essential for your report.
-        </div>
     </div>
 
-    <div class="env-legend">
-        <h4>🎨 Colour Key — Three Environments</h4>
-        <span class="env-tag economic">💰 Economic (5)</span>
-        <span class="env-tag legal">⚖️ Legal (5)</span>
-        <span class="env-tag tech">💻 Technological (6)</span>
+    <div class="group-legend">
+        <h4>🎨 Colour Key — Four Themes</h4>
+        <span class="group-tag g1">🏢 Frameworks (4)</span>
+        <span class="group-tag g2">🌍 Environment (5)</span>
+        <span class="group-tag g3">👥 Stakeholders (5)</span>
+        <span class="group-tag g4">💰 Value (2)</span>
     </div>
 
     <div class="instructions">
@@ -1151,7 +1149,7 @@ h1 {
             </div>
         </div>
         <div class="rules">
-            <strong>📏 Rules:</strong> Words go <strong>across →</strong> or <strong>down ↓</strong> only (no diagonals). 💡 Hint adds 10 seconds. Find all <strong>16 words</strong> to win and unlock definitions!
+            <strong>📏 Rules:</strong> Words go <strong>across →</strong> or <strong>down ↓</strong> only (no diagonals). Words <strong>share letters</strong> at intersections. 💡 Hint adds 10 seconds. Find all <strong>16 words</strong> to win!
         </div>
     </div>
 
@@ -1182,7 +1180,7 @@ h1 {
         <div class="pbar"><div class="pfill" id="pf"></div></div>
     </div>
 
-    <div class="env-progress" id="envProgress"></div>
+    <div class="group-progress" id="groupProgress"></div>
 
     <div class="msg" id="msg"></div>
 
@@ -1221,13 +1219,12 @@ h1 {
     <div class="sources-section">
         <h3>📚 Sources (Harvard Referencing)</h3>
         <ol>
-            <li>Bank of England (2024) <em>Monetary Policy</em>. Available at: <a href="https://www.bankofengland.co.uk/monetary-policy" target="_blank" rel="noopener">https://www.bankofengland.co.uk/monetary-policy</a> (Accessed: 15 September 2026).</li>
-            <li>Competition and Markets Authority (2024) <em>Competition Law</em>. Available at: <a href="https://www.gov.uk/government/organisations/competition-and-markets-authority" target="_blank" rel="noopener">https://www.gov.uk/government/organisations/competition-and-markets-authority</a> (Accessed: 15 September 2026).</li>
-            <li>Information Commissioner's Office (2024) <em>Data Protection</em>. Available at: <a href="https://ico.org.uk" target="_blank" rel="noopener">https://ico.org.uk</a> (Accessed: 15 September 2026).</li>
-            <li>Moore, G. (1991) <em>Crossing the Chasm</em>. New York: HarperBusiness.</li>
-            <li>Office for National Statistics (2024) <em>UK Economic Statistics</em>. Available at: <a href="https://www.ons.gov.uk" target="_blank" rel="noopener">https://www.ons.gov.uk</a> (Accessed: 15 September 2026).</li>
-            <li>Rogers, E. (1962) <em>Diffusion of Innovations</em>. New York: Free Press.</li>
-            <li>World Economic Forum (2024) <em>Top 10 Emerging Technologies</em>. Available at: <a href="https://www.weforum.org" target="_blank" rel="noopener">https://www.weforum.org</a> (Accessed: 15 September 2026).</li>
+            <li>Bath Spa University (2026) <em>BMA4000-20 Module Handbook</em>. Available at: BSU Ultra (Accessed: 15 September 2026).</li>
+            <li>Johnson, G., Whittington, R., Scholes, K., Angwin, D. and Regnér, P. (2020) <em>Exploring Strategy</em>. 12th edn. Harlow: Pearson.</li>
+            <li>Mendelow, A. (1981) 'Environmental Scanning: The Impact of the Stakeholder Concept', <em>Proceedings of the Second International Conference on Information Systems</em>, Cambridge, MA, pp. 407–418.</li>
+            <li>Morrison, J. (2020) <em>The Global Business Environment</em>. 5th edn. Basingstoke: Palgrave Macmillan.</li>
+            <li>Office for National Statistics (2024) <em>UK Business Statistics</em>. Available at: <a href="https://www.ons.gov.uk" target="_blank" rel="noopener">https://www.ons.gov.uk</a> (Accessed: 15 September 2026).</li>
+            <li>PESTLE Analysis (2024) <em>PESTLE Analysis Template</em>. Available at: <a href="https://pestleanalysis.com" target="_blank" rel="noopener">https://pestleanalysis.com</a> (Accessed: 15 September 2026).</li>
         </ol>
     </div>
 </div>
@@ -1252,85 +1249,105 @@ h1 {
 
 <script>
 /* ============================================================
-   WORDS — 16 terms across Economic (5), Legal (5), Technological (6)
-   Updated: removed GDP, removed ALGORITHM, added CHASM + DIFFUSION
+   16 TERMS — Original Sessions 1 & 2 vocabulary
+   Enriched with UK examples from diverse companies + HSC
+   Grouped into 4 themes:
+     g1 = Frameworks (navy)
+     g2 = Environment (light navy)
+     g3 = Stakeholders (gold)
+     g4 = Value (green)
    ============================================================ */
 const WORDS = [
-    // 💰 ECONOMIC (5)
-    { w: 'ECONOMY',   env: 'economic', icon: '💰',
-      def: 'The system of money, trade, and industry in a country.',
-      exBiz: 'The UK economy grew by 0.6% in 2024.',
-      exHealth: 'NHS funding depends on the strength of the UK economy.' },
-    { w: 'INFLATION', env: 'economic', icon: '📈',
-      def: 'A general rise in prices over time — money buys less.',
-      exBiz: 'UK inflation hit 10.1% in 2022, squeezing business margins.',
-      exHealth: 'NHS trusts faced higher energy and supply costs during inflation.' },
-    { w: 'INTEREST',  env: 'economic', icon: '🏦',
-      def: 'The cost of borrowing money — set by the Bank of England.',
-      exBiz: 'Higher interest rates make business loans more expensive.',
-      exHealth: 'NHS capital projects paused when interest rates rose.' },
-    { w: 'RECESSION', env: 'economic', icon: '📉',
-      def: 'Two consecutive quarters of negative economic growth.',
-      exBiz: 'The UK entered recession in 2023 as consumer spending fell.',
-      exHealth: 'Recessions reduce tax revenue, straining NHS budgets.' },
-    { w: 'DEMAND',    env: 'economic', icon: '🛒',
-      def: 'The amount of a product or service consumers want to buy.',
-      exBiz: 'Demand for Ocado deliveries surged during the pandemic.',
-      exHealth: 'Demand for NHS services rises as the population ages.' },
+    // 🏢 FRAMEWORKS (4)
+    { w: 'PESTLE', i: '🏢', g: 'g1', theme: 'Frameworks',
+      def: 'A strategic tool analysing six external factors: Political, Economic, Social, Technological, Legal, Environmental.',
+      exBiz: 'Rolls-Royce uses PESTLE to scan global defence and aerospace markets before entering new countries.',
+      exHealth: 'NHS England uses PESTLE to plan for political (funding), economic (budget), and legal (CQC) pressures.' },
 
-    // ⚖️ LEGAL (5)
-    { w: 'LEGAL',      env: 'legal', icon: '⚖️',
-      def: 'Relating to the law — rules enforced by the state.',
-      exBiz: 'Companies must seek legal advice before entering new markets.',
-      exHealth: 'NHS trusts have legal duties under the Health and Social Care Act 2008.' },
-    { w: 'COMPLIANCE', env: 'legal', icon: '✅',
-      def: 'Following laws, regulations, and internal rules.',
-      exBiz: 'UK banks spend billions on compliance with FCA rules.',
-      exHealth: 'Care homes must meet CQC compliance standards.' },
-    { w: 'LIABILITY',  env: 'legal', icon: '⚔️',
-      def: 'Legal responsibility for something — often a debt or harm.',
-      exBiz: 'Whirlpool faced product liability claims over faulty dryers.',
-      exHealth: 'NHS trusts have liability for clinical negligence.' },
-    { w: 'CONTRACT',   env: 'legal', icon: '📄',
-      def: 'A legally binding agreement between two or more parties.',
-      exBiz: 'Tesco signed a contract with suppliers — delayed payments broke it.',
-      exHealth: 'NHS trusts sign contracts with private care providers.' },
-    { w: 'REGULATION', env: 'legal', icon: '🏛️',
-      def: 'Rules created by official bodies (e.g., FCA, ICO, CQC).',
-      exBiz: 'The FCA fined NatWest £264m for regulation failures.',
-      exHealth: 'CQC regulation ensures care homes meet safety standards.' },
+    { w: 'MACRO', i: '🌐', g: 'g1', theme: 'Frameworks',
+      def: 'The broad, external environment affecting all businesses — national and global forces.',
+      exBiz: 'UK inflation at 10% in 2022 was a MACRO force hitting Greggs, Tesco, and Ryanair alike.',
+      exHealth: 'An ageing UK population is a MACRO trend reshaping demand for care homes like HC-One and Barchester.' },
 
-    // 💻 TECHNOLOGICAL (6)
-    { w: 'DIGITAL',     env: 'tech', icon: '💻',
-      def: 'Using computers, the internet, and electronic technology.',
-      exBiz: 'Monzo is a digital-only bank with no high-street branches.',
-      exHealth: 'The NHS App is a digital gateway to GP services.' },
-    { w: 'AUTOMATION',  env: 'tech', icon: '🤖',
-      def: 'Using machines to do work with little human input.',
-      exBiz: 'Ocado uses automation to pick groceries in minutes.',
-      exHealth: 'Automated dispensing in hospital pharmacies reduces errors.' },
-    { w: 'INNOVATION',  env: 'tech', icon: '🚀',
-      def: 'A new idea, product, or process that is both novel and useful.',
-      exBiz: 'Revolut disrupted banking with innovation in mobile finance.',
-      exHealth: 'AI diagnostics at Moorfields Eye Hospital is major innovation.' },
-    { w: 'DATA',        env: 'tech', icon: '📊',
-      def: 'Facts and information collected for analysis.',
-      exBiz: 'Companies use customer data to personalise marketing.',
-      exHealth: 'NHS uses patient data to improve clinical outcomes.' },
-    { w: 'CHASM',       env: 'tech', icon: '🕳️',
-      def: 'Moore (1991): the gap between Early Adopters and Early Majority — where most innovations fail.',
-      exBiz: 'Babylon Health fell into the Chasm — loved by early users, distrusted by the mainstream.',
-      exHealth: 'NHS Test & Trace failed to cross the Chasm — high early adoption, but trust collapsed.' },
-    { w: 'DIFFUSION',   env: 'tech', icon: '🌊',
-      def: 'Rogers (1962): how new technology spreads through a population — from Innovators to Laggards.',
-      exBiz: 'Monzo moved from Innovators to Early Majority in under 5 years.',
-      exHealth: 'Electronic prescribing took 15 years to diffuse from Innovators to Late Majority in the NHS.' }
+    { w: 'MESO', i: '🏭', g: 'g1', theme: 'Frameworks',
+      def: 'The industry or sector-level environment — competitors, suppliers, and market structure.',
+      exBiz: 'The UK supermarket sector is MESO — Tesco, Sainsbury\'s, Asda, and Aldi compete on price and loyalty.',
+      exHealth: 'The UK care home sector is MESO — Four Seasons, HC-One, and Barchester compete on occupancy and CQC ratings.' },
+
+    { w: 'MICRO', i: '🏪', g: 'g1', theme: 'Frameworks',
+      def: 'The internal, close-up environment — customers, employees, suppliers, and operations of one organisation.',
+      exBiz: 'A single Wetherspoon pub\'s staff, menu, and local footfall are MICRO factors.',
+      exHealth: 'A single GP surgery\'s patient list, staffing, and appointment system are MICRO factors.' },
+
+    // 🌍 ENVIRONMENT (5)
+    { w: 'INTERNAL', i: '🏢', g: 'g2', theme: 'Environment',
+      def: 'Factors inside the organisation — its people, culture, resources, and capabilities.',
+      exBiz: 'Marks & Spencer\'s strong brand heritage is an INTERNAL strength; its slow digital adoption was an INTERNAL weakness.',
+      exHealth: 'A care home\'s staff training and culture are INTERNAL factors affecting CQC inspection outcomes.' },
+
+    { w: 'EXTERNAL', i: '🌍', g: 'g2', theme: 'Environment',
+      def: 'Factors outside the organisation\'s control — politics, economics, technology, and social change.',
+      exBiz: 'The 2021 UK HGV driver shortage was an EXTERNAL shock affecting Tesco, Amazon, and BP fuel deliveries.',
+      exHealth: 'The COVID-19 pandemic was an EXTERNAL shock that overwhelmed NHS capacity in 2020.' },
+
+    { w: 'UNCERTAINTY', i: '❓', g: 'g2', theme: 'Environment',
+      def: 'When the future cannot be predicted with confidence — a core challenge for strategic planning.',
+      exBiz: 'Brexit created UNCERTAINTY for UK exporters like JCB and Nissan, who faced unknown tariffs.',
+      exHealth: 'Pandemic variants created UNCERTAINTY for NHS trusts planning ICU capacity.' },
+
+    { w: 'DYNAMIC', i: '⚡', g: 'g2', theme: 'Environment',
+      def: 'An environment that changes quickly and unpredictably — often in fast-moving industries.',
+      exBiz: 'The UK fintech sector is DYNAMIC — Revolut, Monzo, and Starling launch products monthly.',
+      exHealth: 'Digital health is DYNAMIC — NHS AI tools and Babylon Health\'s rise and fall show rapid change.' },
+
+    { w: 'COMPLEX', i: '🌀', g: 'g2', theme: 'Environment',
+      def: 'An environment with many interconnected variables — hard to analyse or predict.',
+      exBiz: 'The UK energy market is COMPLEX — Ofgem, wholesale gas prices, net-zero policy, and consumer bills interact.',
+      exHealth: 'NHS commissioning is COMPLEX — NHS England, ICSs, local councils, and private providers all interact.' },
+
+    // 👥 STAKEHOLDERS (5)
+    { w: 'STAKEHOLDER', i: '👥', g: 'g3', theme: 'Stakeholders',
+      def: 'Any person or group affected by, or able to affect, the organisation\'s actions.',
+      exBiz: 'BT Group\'s stakeholders include shareholders, 100,000+ employees, Ofcom, and 30 million UK customers.',
+      exHealth: 'An NHS Trust\'s stakeholders include patients, clinicians, the CQC, local councils, and the Department of Health.' },
+
+    { w: 'POWER', i: '💪', g: 'g3', theme: 'Stakeholders',
+      def: 'A stakeholder\'s ability to influence the organisation\'s decisions or outcomes.',
+      exBiz: 'The CMA has POWER over UK mergers — it blocked Microsoft\'s Activision deal in 2023.',
+      exHealth: 'The CQC has POWER over care homes — a poor rating can close a home.' },
+
+    { w: 'INTEREST', i: '❤️', g: 'g3', theme: 'Stakeholders',
+      def: 'The level of concern a stakeholder has about the organisation\'s decisions.',
+      exBiz: 'Tesco\'s customers show high INTEREST in pricing; passive investors show low INTEREST in daily operations.',
+      exHealth: 'Patients show high INTEREST in waiting times; government shows high INTEREST in NHS spending.' },
+
+    { w: 'MENDELOW', i: '📊', g: 'g3', theme: 'Stakeholders',
+      def: 'A framework (Mendelow, 1981) mapping stakeholders by their Power and Interest to guide engagement strategy.',
+      exBiz: 'Shell uses MENDELOW to manage climate activists (high interest, low power) vs the UK government (high power, high interest).',
+      exHealth: 'NHS Trusts use MENDELOW to prioritise engagement with the CQC (high power, high interest) vs the public (low power, high interest).' },
+
+    { w: 'MATRIX', i: '📋', g: 'g3', theme: 'Stakeholders',
+      def: 'A two-by-two grid — used in Mendelow\'s MATRIX to classify stakeholders.',
+      exBiz: 'In the MATRIX, Ofcom is "keep satisfied" for BT; retail investors are "monitor".',
+      exHealth: 'In the MATRIX, the CQC is "manage closely" for a care home; local media is "keep informed".' },
+
+    // 💰 VALUE (2)
+    { w: 'VALUE', i: '💰', g: 'g4', theme: 'Value',
+      def: 'The benefit an organisation creates for its stakeholders — financial, social, or strategic.',
+      exBiz: 'Aldi creates VALUE through low prices; John Lewis through service and quality.',
+      exHealth: 'Marie Curie creates VALUE through free end-of-life care; Bupa through private healthcare access.' },
+
+    { w: 'TRANSFORMATION', i: '🔄', g: 'g4', theme: 'Value',
+      def: 'A fundamental change in how an organisation operates — often driven by technology or strategy.',
+      exBiz: 'NatWest\'s TRANSFORMATION into a digital-first bank cut branch numbers by 60% since 2015.',
+      exHealth: 'NHS England\'s TRANSFORMATION to integrated care systems (ICSs) restructured how care is commissioned.' }
 ];
 
-const ENV_LABELS = {
-    economic: { name: 'Economic',   colour: 'var(--bsu-gold)' },
-    legal:    { name: 'Legal',      colour: 'var(--legal)' },
-    tech:     { name: 'Technological', colour: 'var(--tech)' }
+const GROUP_LABELS = {
+    g1: { name: 'Frameworks',    icon: '🏢' },
+    g2: { name: 'Environment',   icon: '🌍' },
+    g3: { name: 'Stakeholders',  icon: '👥' },
+    g4: { name: 'Value',         icon: '💰' }
 };
 
 const GS = 14;
@@ -1340,7 +1357,6 @@ let sel = false, start = null, hl = [];
 let done = false, secs = 0, tInt = null, started = false;
 let hinting = false, firstTap = null, hintsUsed = 0;
 let wrongAttempts = 0;
-let resetAction = null; // 'new' or 'reset'
 
 const $ = id => document.getElementById(id);
 const gridEl = $('grid'), wlist = $('wlist');
@@ -1367,13 +1383,13 @@ function genGrid() {
     const fr = Math.floor(GS / 2);
     const fc = Math.floor((GS - f.w.length) / 2);
     for (let i = 0; i < f.w.length; i++) G[fr][fc + i] = f.w[i];
-    placed.push({ w: f.w, r: fr, c: fc, d: [0, 1], env: f.env, icon: f.icon });
+    placed.push({ w: f.w, r: fr, c: fc, d: [0, 1], g: f.g, i: f.i });
 
     for (let wi = 1; wi < sorted.length; wi++) {
         const word = sorted[wi].w;
         let ok = false, tries = 0;
 
-        while (!ok && tries < 1200) {
+        while (!ok && tries < 1500) {
             tries++;
             const target = placed[Math.floor(Math.random() * placed.length)];
             const indices = [];
@@ -1421,12 +1437,12 @@ function genGrid() {
             for (let k = 0; k < word.length; k++) {
                 G[sR + nd[0] * k][sC + nd[1] * k] = word[k];
             }
-            placed.push({ w: word, r: sR, c: sC, d: nd, env: sorted[wi].env, icon: sorted[wi].icon });
+            placed.push({ w: word, r: sR, c: sC, d: nd, g: sorted[wi].g, i: sorted[wi].i });
             ok = true;
         }
 
         if (!ok) {
-            for (let t2 = 0; t2 < 400 && !ok; t2++) {
+            for (let t2 = 0; t2 < 500 && !ok; t2++) {
                 const d = [[0, 1], [1, 0]][Math.floor(Math.random() * 2)];
                 const mr = d[0] ? GS - word.length : GS - 1;
                 const mc = d[1] ? GS - word.length : GS - 1;
@@ -1443,7 +1459,7 @@ function genGrid() {
                     for (let k = 0; k < word.length; k++) {
                         G[r + d[0] * k][c + d[1] * k] = word[k];
                     }
-                    placed.push({ w: word, r, c, d, env: sorted[wi].env, icon: sorted[wi].icon });
+                    placed.push({ w: word, r, c, d, g: sorted[wi].g, i: sorted[wi].i });
                     ok = true;
                 }
             }
@@ -1466,7 +1482,7 @@ function render() {
     found.forEach(w => {
         const p = placed.find(x => x.w === w);
         if (p) for (let k = 0; k < p.w.length; k++) {
-            cm[(p.r + p.d[0] * k) + ',' + (p.c + p.d[1] * k)] = p.env;
+            cm[(p.r + p.d[0] * k) + ',' + (p.c + p.d[1] * k)] = p.g;
         }
     });
 
@@ -1561,30 +1577,29 @@ function gc(r, c) {
 
 function updBank() {
     wlist.innerHTML = '';
-    const groups = { economic: [], legal: [], tech: [] };
-    WORDS.forEach(wd => groups[wd.env].push(wd));
+    const groups = { g1: [], g2: [], g3: [], g4: [] };
+    WORDS.forEach(wd => groups[wd.g].push(wd));
 
-    const order = ['economic', 'legal', 'tech'];
-    order.forEach(env => {
-        const list = groups[env];
+    ['g1', 'g2', 'g3', 'g4'].forEach(g => {
+        const list = groups[g];
         if (list.length === 0) return;
 
         const groupDiv = document.createElement('div');
-        groupDiv.className = 'word-group ' + env;
+        groupDiv.className = 'word-group ' + g;
         groupDiv.innerHTML = `
             <div class="group-label">
                 <span class="group-dot"></span>
-                ${ENV_LABELS[env].name}
+                ${GROUP_LABELS[g].icon} ${GROUP_LABELS[g].name}
             </div>
         `;
 
         list.forEach(wd => {
             const item = document.createElement('div');
-            item.className = 'word-item ' + env;
+            item.className = 'word-item ' + g;
             const isFound = found.includes(wd.w);
             if (isFound) item.classList.add('found');
             item.innerHTML = `
-                <span class="icon">${wd.icon}</span>
+                <span class="icon">${wd.i}</span>
                 <span class="txt">${wd.w}</span>
                 <span class="chk">✅</span>
             `;
@@ -1603,17 +1618,17 @@ function updProg() {
     $('pf').style.width = (f / t * 100) + '%';
     $('hintBtn').disabled = f === t || done;
 
-    const envProg = $('envProgress');
-    envProg.innerHTML = '';
-    ['economic', 'legal', 'tech'].forEach(env => {
-        const wordsInEnv = WORDS.filter(w => w.env === env).map(w => w.w);
-        const foundInEnv = wordsInEnv.filter(w => found.includes(w)).length;
-        const total = wordsInEnv.length;
-        const complete = foundInEnv === total;
+    const gp = $('groupProgress');
+    gp.innerHTML = '';
+    ['g1', 'g2', 'g3', 'g4'].forEach(g => {
+        const wordsInGroup = WORDS.filter(w => w.g === g).map(w => w.w);
+        const foundInGroup = wordsInGroup.filter(w => found.includes(w)).length;
+        const total = wordsInGroup.length;
+        const complete = foundInGroup === total;
         const chip = document.createElement('span');
-        chip.className = 'env-chip ' + env + (complete ? ' complete' : '');
-        chip.innerHTML = `${ENV_LABELS[env].name}: <strong>${foundInEnv}/${total}</strong> ${complete ? '✅' : ''}`;
-        envProg.appendChild(chip);
+        chip.className = 'group-chip ' + g + (complete ? ' complete' : '');
+        chip.innerHTML = `${GROUP_LABELS[g].icon} ${GROUP_LABELS[g].name}: <strong>${foundInGroup}/${total}</strong> ${complete ? '✅' : ''}`;
+        gp.appendChild(chip);
     });
 }
 
@@ -1675,8 +1690,8 @@ function endSel() {
             const cl = gc(p.r, p.c);
             if (cl) {
                 cl.classList.remove('selecting');
-                ['economic', 'legal', 'tech'].forEach(e => cl.classList.remove(e));
-                cl.classList.add('found', fw.env);
+                ['g1', 'g2', 'g3', 'g4'].forEach(g => cl.classList.remove(g));
+                cl.classList.add('found', fw.g);
             }
         });
         hl = [];
@@ -1717,7 +1732,7 @@ function clrHL() {
 
 function showDefinition(word) {
     const popup = $('defPopup');
-    $('defWord').textContent = word.icon + ' ' + word.w + ' · ' + ENV_LABELS[word.env].name;
+    $('defWord').textContent = word.i + ' ' + word.w + ' · ' + word.theme;
     $('defText').innerHTML = '<strong>' + word.def + '</strong>';
     $('defExample').innerHTML =
         '<strong>💼 Business:</strong> ' + word.exBiz + '<br>' +
@@ -1726,7 +1741,7 @@ function showDefinition(word) {
     clearTimeout(showDefinition._timer);
     showDefinition._timer = setTimeout(() => {
         popup.classList.remove('show');
-    }, 5500);
+    }, 6500);
 }
 
 function hint() {
@@ -1738,7 +1753,7 @@ function hint() {
     if (!pl) return;
     hinting = true;
     $('hintBtn').disabled = true;
-    $('hintLabel').textContent = 'Showing: ' + rw.w + ' (' + ENV_LABELS[rw.env].name + ')';
+    $('hintLabel').textContent = 'Showing: ' + rw.w + ' (' + rw.theme + ')';
 
     const cells = [];
     for (let k = 0; k < pl.w.length; k++) {
@@ -1797,8 +1812,8 @@ function showFeedback() {
     WORDS.forEach(wd => {
         rows += `
             <tr>
-                <td><span class="env-pill ${wd.env}">${ENV_LABELS[wd.env].name}</span></td>
-                <td><strong>${wd.icon} ${wd.w}</strong></td>
+                <td><span class="group-pill ${wd.g}">${GROUP_LABELS[wd.g].name}</span></td>
+                <td><strong>${wd.i} ${wd.w}</strong></td>
                 <td>${wd.def}</td>
                 <td>${wd.exBiz}</td>
                 <td>${wd.exHealth}</td>
@@ -1808,7 +1823,7 @@ function showFeedback() {
     table.innerHTML = `
         <thead>
             <tr>
-                <th>Environment</th>
+                <th>Theme</th>
                 <th>Term</th>
                 <th>Definition</th>
                 <th>UK Business Example</th>
@@ -1819,12 +1834,12 @@ function showFeedback() {
     `;
 
     $('takeawayBox').innerHTML =
-        '🎉 <strong>Excellent!</strong> You\'ve unlocked all 16 business terms across three environments:<br>' +
-        '💰 <strong>Economic (5):</strong> ECONOMY, INFLATION, INTEREST, RECESSION, DEMAND<br>' +
-        '⚖️ <strong>Legal (5):</strong> LEGAL, COMPLIANCE, LIABILITY, CONTRACT, REGULATION<br>' +
-        '💻 <strong>Technological (6):</strong> DIGITAL, AUTOMATION, INNOVATION, DATA, CHASM, DIFFUSION<br><br>' +
-        'These are the terms your markers expect to see in your Integrated Professional Analysis. ' +
-        'Use them naturally — and always support them with <strong>evidence</strong> and a <strong>Harvard reference</strong>.';
+        '🎉 <strong>Excellent!</strong> You\'ve unlocked all 16 key business terms from Sessions 1 &amp; 2:<br>' +
+        '🏢 <strong>Frameworks (4):</strong> PESTLE, MACRO, MESO, MICRO<br>' +
+        '🌍 <strong>Environment (5):</strong> INTERNAL, EXTERNAL, UNCERTAINTY, DYNAMIC, COMPLEX<br>' +
+        '👥 <strong>Stakeholders (5):</strong> STAKEHOLDER, POWER, INTEREST, MENDELOW, MATRIX<br>' +
+        '💰 <strong>Value (2):</strong> VALUE, TRANSFORMATION<br><br>' +
+        'These terms are your <strong>strategic toolkit</strong>. Use them in your Integrated Professional Analysis — with <strong>evidence</strong> and <strong>Harvard references</strong>.';
 
     $('feedbackSection').classList.add('show');
 }
@@ -1833,13 +1848,13 @@ function showDone() {
     const t = secs;
     let stars, badge, bClass, emoji, title, sub;
 
-    if (t < 240 && hintsUsed === 0) {
+    if (t < 180 && hintsUsed === 0) {
         stars = '⭐⭐⭐'; badge = '🏆 PLATINUM – PERFECT!'; bClass = 'gold';
-        emoji = '👑'; title = 'ABSOLUTELY BRILLIANT!'; sub = 'Under 4 minutes with no hints!';
-    } else if (t < 420) {
+        emoji = '👑'; title = 'ABSOLUTELY BRILLIANT!'; sub = 'Under 3 minutes with no hints!';
+    } else if (t < 300) {
         stars = '⭐⭐⭐'; badge = '🥇 GOLD – EXCELLENT!'; bClass = 'gold';
         emoji = '🏅'; title = 'Outstanding Work!'; sub = 'Strong vocabulary mastery!';
-    } else if (t < 660) {
+    } else if (t < 480) {
         stars = '⭐⭐'; badge = '🥈 SILVER – GREAT!'; bClass = 'silver';
         emoji = '🌟'; title = 'Well Done!'; sub = 'Good business vocabulary!';
     } else {
@@ -1860,7 +1875,7 @@ function showDone() {
     $('scoreBadge').className = 'final-badge ' + bClass;
 
     $('scoreMessage').innerHTML =
-        'You just reinforced <strong>16 essential business terms</strong> — from <strong>INFLATION</strong> to <strong>COMPLIANCE</strong>, from <strong>CHASM</strong> to <strong>LIABILITY</strong>. These are the words your markers will look for in your Integrated Professional Analysis.';
+        'You just found and reinforced <strong>16 essential business terms</strong> — from <strong>PESTLE</strong> to <strong>MENDELOW</strong>, from <strong>STAKEHOLDER</strong> to <strong>TRANSFORMATION</strong>. These are the language of your future career.';
 
     $('scoreMotivation').innerHTML =
         '🌟 <strong>Keep building your business vocabulary.</strong><br>' +
@@ -1877,8 +1892,8 @@ function showDone() {
 }
 
 function confetti() {
-    const cs = ['#003366', '#c8a415', '#e0be3a', '#1a4d80', '#C62828', '#2ECC71'];
-    for (let i = 0; i < 90; i++) {
+    const cs = ['#003366', '#c8a415', '#e0be3a', '#1a4d80', '#2E7D32', '#C62828', '#FFFFFF'];
+    for (let i = 0; i < 100; i++) {
         const p = document.createElement('div');
         p.className = 'conf';
         p.style.left = Math.random() * 100 + '%';
@@ -1918,7 +1933,6 @@ function newGame() {
     if (found.length > 0 && found.length < WORDS.length) {
         $('resetTitle').textContent = '🔄 New Puzzle?';
         $('resetMsg').textContent = 'Current progress will be lost. A brand new grid will be generated.';
-        resetAction = 'new';
         $('resetOverlay').classList.add('show');
         return;
     }
@@ -1955,10 +1969,10 @@ function saveAsWord() {
     var rows = '';
     WORDS.forEach(function(wd) {
         var isFound = found.indexOf(wd.w) !== -1 ? '✅ Found' : '⏳ Not found';
-        var envName = ENV_LABELS[wd.env].name;
+        var themeName = GROUP_LABELS[wd.g].name;
         rows += '<tr>';
-        rows += '<td><strong>' + wd.icon + ' ' + wd.w + '</strong></td>';
-        rows += '<td>' + envName + '</td>';
+        rows += '<td><strong>' + wd.i + ' ' + wd.w + '</strong></td>';
+        rows += '<td>' + themeName + '</td>';
         rows += '<td>' + wd.def + '</td>';
         rows += '<td>' + wd.exBiz + '</td>';
         rows += '<td>' + wd.exHealth + '</td>';
@@ -1975,7 +1989,7 @@ function saveAsWord() {
     html += 'xmlns="http://www.w3.org/TR/REC-html40">';
     html += '<head>';
     html += '<meta charset="utf-8">';
-    html += '<title>BMA4000-20 Session 8 Vocabulary</title>';
+    html += '<title>BMA4000-20 Sessions 1-2 Vocabulary</title>';
     html += '<style>';
     html += 'body { font-family: Calibri, Arial, sans-serif; color: #222; font-size: 11pt; line-height: 1.5; }';
     html += '.header { background: #003366; color: #fff; padding: 20px; text-align: center; }';
@@ -1997,8 +2011,8 @@ function saveAsWord() {
 
     // Header
     html += '<div class="header">';
-    html += '<h1>BMA4000-20 · Session 8: Assessment Support</h1>';
-    html += '<p>Vocabulary Booster — Economic · Legal · Technological Environments</p>';
+    html += '<h1>BMA4000-20 · Sessions 1 &amp; 2: Key Business Terms</h1>';
+    html += '<p>Vocabulary Booster — Foundations of Business Analysis</p>';
     html += '</div>';
 
     // Results Summary
@@ -2015,7 +2029,7 @@ function saveAsWord() {
     html += '<table>';
     html += '<tr>';
     html += '<th>Term</th>';
-    html += '<th>Environment</th>';
+    html += '<th>Theme</th>';
     html += '<th>Definition</th>';
     html += '<th>UK Business Example</th>';
     html += '<th>Health &amp; Social Care Example</th>';
@@ -2027,23 +2041,22 @@ function saveAsWord() {
     // Key Takeaways
     html += '<h2>🔑 Key Takeaways</h2>';
     html += '<ul>';
-    html += '<li><strong>Economic terms</strong> — economy, inflation, interest, recession, demand — describe the financial forces shaping every business.</li>';
-    html += '<li><strong>Legal terms</strong> — legal, compliance, liability, contract, regulation — describe the rules that govern business behaviour.</li>';
-    html += '<li><strong>Technological terms</strong> — digital, automation, innovation, data, chasm, diffusion — describe the tools and adoption models reshaping industries.</li>';
-    html += '<li><strong>Chasm (Moore, 1991)</strong> and <strong>Diffusion (Rogers, 1962)</strong> are the two key adoption models from Session 7.</li>';
+    html += '<li><strong>Frameworks</strong> — PESTLE, MACRO, MESO, MICRO — analyse the environment at every level.</li>';
+    html += '<li><strong>Environment</strong> — INTERNAL, EXTERNAL, UNCERTAINTY, DYNAMIC, COMPLEX — describe how environments differ.</li>';
+    html += '<li><strong>Stakeholders</strong> — STAKEHOLDER, POWER, INTEREST, MENDELOW, MATRIX — map who matters and why.</li>';
+    html += '<li><strong>Value</strong> — VALUE, TRANSFORMATION — explain what organisations create and how they change.</li>';
     html += '<li>Use these terms in your Integrated Professional Analysis — with <strong>evidence</strong> and <strong>Harvard references</strong>.</li>';
     html += '</ul>';
 
     // Sources
     html += '<h2>📚 Sources (Harvard Referencing)</h2>';
     html += '<ol>';
-    html += '<li>Bank of England (2024) <em>Monetary Policy</em>. Available at: https://www.bankofengland.co.uk/monetary-policy (Accessed: 15 September 2026).</li>';
-    html += '<li>Competition and Markets Authority (2024) <em>Competition Law</em>. Available at: https://www.gov.uk/government/organisations/competition-and-markets-authority (Accessed: 15 September 2026).</li>';
-    html += '<li>Information Commissioner\'s Office (2024) <em>Data Protection</em>. Available at: https://ico.org.uk (Accessed: 15 September 2026).</li>';
-    html += '<li>Moore, G. (1991) <em>Crossing the Chasm</em>. New York: HarperBusiness.</li>';
-    html += '<li>Office for National Statistics (2024) <em>UK Economic Statistics</em>. Available at: https://www.ons.gov.uk (Accessed: 15 September 2026).</li>';
-    html += '<li>Rogers, E. (1962) <em>Diffusion of Innovations</em>. New York: Free Press.</li>';
-    html += '<li>World Economic Forum (2024) <em>Top 10 Emerging Technologies</em>. Available at: https://www.weforum.org (Accessed: 15 September 2026).</li>';
+    html += '<li>Bath Spa University (2026) <em>BMA4000-20 Module Handbook</em>. Available at: BSU Ultra (Accessed: 15 September 2026).</li>';
+    html += '<li>Johnson, G., Whittington, R., Scholes, K., Angwin, D. and Regnér, P. (2020) <em>Exploring Strategy</em>. 12th edn. Harlow: Pearson.</li>';
+    html += '<li>Mendelow, A. (1981) \'Environmental Scanning: The Impact of the Stakeholder Concept\', <em>Proceedings of the Second International Conference on Information Systems</em>, Cambridge, MA, pp. 407–418.</li>';
+    html += '<li>Morrison, J. (2020) <em>The Global Business Environment</em>. 5th edn. Basingstoke: Palgrave Macmillan.</li>';
+    html += '<li>Office for National Statistics (2024) <em>UK Business Statistics</em>. Available at: https://www.ons.gov.uk (Accessed: 15 September 2026).</li>';
+    html += '<li>PESTLE Analysis (2024) <em>PESTLE Analysis Template</em>. Available at: https://pestleanalysis.com (Accessed: 15 September 2026).</li>';
     html += '</ol>';
 
     // Footer
@@ -2061,7 +2074,7 @@ function saveAsWord() {
         var url = URL.createObjectURL(blob);
         var a = document.createElement('a');
         a.href = url;
-        a.download = 'BMA4000-20_S8_Vocabulary_Glossary.doc';
+        a.download = 'BMA4000-20_S1-2_Vocabulary_Glossary.doc';
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -2172,7 +2185,7 @@ var audio = {
             this.m.gain.linearRampToValueAtTime(this.on ? 0.08 : 0, this.ctx.currentTime + 0.5);
         }
         try {
-            localStorage.setItem('s8_sound', this.on ? 'on' : 'off');
+            localStorage.setItem('s12_sound', this.on ? 'on' : 'off');
         } catch(e) {}
         return this.on;
     }
@@ -2210,21 +2223,21 @@ $('themeToggle').addEventListener('click', function () {
     if (isLight) {
         document.documentElement.removeAttribute('data-theme');
         this.textContent = '🌙 Theme';
-        try { localStorage.setItem('s8_theme', 'dark'); } catch (e) {}
+        try { localStorage.setItem('s12_theme', 'dark'); } catch (e) {}
     } else {
         document.documentElement.setAttribute('data-theme', 'light');
         this.textContent = '☀️ Theme';
-        try { localStorage.setItem('s8_theme', 'light'); } catch (e) {}
+        try { localStorage.setItem('s12_theme', 'light'); } catch (e) {}
     }
 });
 
 (function () {
     try {
-        if (localStorage.getItem('s8_theme') === 'light') {
+        if (localStorage.getItem('s12_theme') === 'light') {
             document.documentElement.setAttribute('data-theme', 'light');
             $('themeToggle').textContent = '☀️ Theme';
         }
-        if (localStorage.getItem('s8_sound') === 'off') {
+        if (localStorage.getItem('s12_sound') === 'off') {
             audio.on = false;
             if (audio.m) audio.m.gain.value = 0;
             $('soundToggle').textContent = '🔇 Sound';
@@ -2246,7 +2259,6 @@ $('saveBtn').addEventListener('click', saveAsWord);
 $('resetAnsBtn').addEventListener('click', function() {
     $('resetTitle').textContent = '🔄 Reset Answers?';
     $('resetMsg').textContent = 'The grid will restart with new positions. Your current progress will be lost.';
-    resetAction = 'reset';
     $('resetOverlay').classList.add('show');
 });
 $('scorePlayAgainBtn').addEventListener('click', doReset);
@@ -2258,7 +2270,7 @@ $('resetOverlay').addEventListener('click', function(e) {
 
 genGrid();
 render();
-console.log('✅ BMA4000-20 Session 8 Vocabulary Word Search loaded — 16 terms: 5 Economic · 5 Legal · 6 Technological (incl. CHASM + DIFFUSION).');
+console.log('✅ BMA4000-20 Sessions 1 & 2 Vocabulary Word Search loaded — 16 terms across 4 themes: Frameworks, Environment, Stakeholders, Value.');
 </script>
 </body>
 </html>
