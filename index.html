@@ -15,8 +15,6 @@
     --bsu-gold: #c8a415;
     --bsu-gold-light: #e0be3a;
     --bsu-gold-dark: #8B6914;
-    --bsu-white: #FFFFFF;
-    --bsu-light: #f4f7fc;
 
     --g1: #003366;
     --g2: #1a4d80;
@@ -33,8 +31,8 @@
     --transition: 0.3s ease;
 }
 
-[data-theme="light"] {
-    --bsu-light: #f4f7fc;
+[data-theme="light"] body {
+    background: linear-gradient(135deg, #f4f7fc 0%, #e0e8f2 50%, #d8e4f0 100%);
 }
 
 html {
@@ -61,11 +59,6 @@ body {
 @keyframes gradShift {
     0%, 100% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
-}
-
-[data-theme="light"] body {
-    background: linear-gradient(135deg, #f4f7fc 0%, #e0e8f2 50%, #d8e4f0 100%);
-    background-attachment: fixed;
 }
 
 .particles {
@@ -418,7 +411,8 @@ h1 {
     -webkit-tap-highlight-color: transparent;
     min-width: 0;
 }
-.cell:hover:not(.faded) { background: #e8ecf1; }
+.cell.black { background: #2c3e50; border-color: #2c3e50; cursor: default; pointer-events: none; }
+.cell:hover:not(.black):not(.faded) { background: #e8ecf1; }
 .cell.selecting {
     background: var(--bsu-gold) !important;
     color: var(--bsu-navy) !important;
@@ -464,6 +458,7 @@ h1 {
     background: transparent !important;
     color: transparent !important;
 }
+.cell.black.faded { opacity: 0 !important; transform: scale(0) !important; }
 .cell.revealed {
     transform: scale(1.05);
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
@@ -1096,7 +1091,7 @@ h1 {
     <div class="header">
         <div class="module-code">BMA4000-20 | The Business Environment</div>
         <div class="session-title">Sessions 1 &amp; 2: Key Business Terms · Vocabulary Booster</div>
-        <div class="activity-type">🔍 Interactive Word Search – Foundations of Business Analysis</div>
+        <div class="activity-type">🔍 Crossword Word Search – Foundations of Business Analysis</div>
     </div>
 
     <h1>🔍 Business Foundations Word Search</h1>
@@ -1134,7 +1129,7 @@ h1 {
                     <strong>Step 1:</strong> Tap the <strong>first letter</strong> of the word (it turns gold)<br>
                     <strong>Step 2:</strong> Tap the <strong>last letter</strong> of the word<br>
                     The game draws the line automatically!<br>
-                    <em>Words share letters at intersections — so letters can be tapped again.</em>
+                    <em>Words share letters at intersections — a letter can belong to two words.</em>
                 </div>
             </div>
         </div>
@@ -1149,7 +1144,7 @@ h1 {
             </div>
         </div>
         <div class="rules">
-            <strong>📏 Rules:</strong> Words go <strong>across →</strong> or <strong>down ↓</strong> only (no diagonals). Words <strong>share letters</strong> at intersections. 💡 Hint adds 10 seconds. Find all <strong>16 words</strong> to win!
+            <strong>📏 Rules:</strong> Words go <strong>across →</strong> or <strong>down ↓</strong> only (no diagonals). ⬛ Black squares are spacers. Words <strong>share letters</strong> at intersections. 💡 Hint adds 10 seconds. Find all <strong>16 words</strong> to win!
         </div>
     </div>
 
@@ -1248,17 +1243,7 @@ h1 {
 </footer>
 
 <script>
-/* ============================================================
-   16 TERMS — Original Sessions 1 & 2 vocabulary
-   Enriched with UK examples from diverse companies + HSC
-   Grouped into 4 themes:
-     g1 = Frameworks (navy)
-     g2 = Environment (light navy)
-     g3 = Stakeholders (gold)
-     g4 = Value (green)
-   ============================================================ */
 const WORDS = [
-    // 🏢 FRAMEWORKS (4)
     { w: 'PESTLE', i: '🏢', g: 'g1', theme: 'Frameworks',
       def: 'A strategic tool analysing six external factors: Political, Economic, Social, Technological, Legal, Environmental.',
       exBiz: 'Rolls-Royce uses PESTLE to scan global defence and aerospace markets before entering new countries.',
@@ -1279,7 +1264,6 @@ const WORDS = [
       exBiz: 'A single Wetherspoon pub\'s staff, menu, and local footfall are MICRO factors.',
       exHealth: 'A single GP surgery\'s patient list, staffing, and appointment system are MICRO factors.' },
 
-    // 🌍 ENVIRONMENT (5)
     { w: 'INTERNAL', i: '🏢', g: 'g2', theme: 'Environment',
       def: 'Factors inside the organisation — its people, culture, resources, and capabilities.',
       exBiz: 'Marks & Spencer\'s strong brand heritage is an INTERNAL strength; its slow digital adoption was an INTERNAL weakness.',
@@ -1305,7 +1289,6 @@ const WORDS = [
       exBiz: 'The UK energy market is COMPLEX — Ofgem, wholesale gas prices, net-zero policy, and consumer bills interact.',
       exHealth: 'NHS commissioning is COMPLEX — NHS England, ICSs, local councils, and private providers all interact.' },
 
-    // 👥 STAKEHOLDERS (5)
     { w: 'STAKEHOLDER', i: '👥', g: 'g3', theme: 'Stakeholders',
       def: 'Any person or group affected by, or able to affect, the organisation\'s actions.',
       exBiz: 'BT Group\'s stakeholders include shareholders, 100,000+ employees, Ofcom, and 30 million UK customers.',
@@ -1331,7 +1314,6 @@ const WORDS = [
       exBiz: 'In the MATRIX, Ofcom is "keep satisfied" for BT; retail investors are "monitor".',
       exHealth: 'In the MATRIX, the CQC is "manage closely" for a care home; local media is "keep informed".' },
 
-    // 💰 VALUE (2)
     { w: 'VALUE', i: '💰', g: 'g4', theme: 'Value',
       def: 'The benefit an organisation creates for its stakeholders — financial, social, or strategic.',
       exBiz: 'Aldi creates VALUE through low prices; John Lewis through service and quality.',
@@ -1472,6 +1454,26 @@ function genGrid() {
             if (G[r][c] === '') G[r][c] = L[Math.floor(Math.random() * 26)];
         }
     }
+
+    // ★ BLACK BOXES — 5.5% density (safe for long words) - PRESERVED
+    const bc = Math.floor(GS * GS * 0.055);
+    const pos = [];
+    for (let r = 0; r < GS; r++) for (let c = 0; c < GS; c++) pos.push([r, c]);
+    shuf(pos);
+    let ba = 0;
+    for (const p of pos) {
+        if (ba >= bc) break;
+        let ip = false;
+        for (const pw of placed) {
+            for (let k = 0; k < pw.w.length; k++) {
+                if (pw.r + pw.d[0] * k === p[0] && pw.c + pw.d[1] * k === p[1]) {
+                    ip = true; break;
+                }
+            }
+            if (ip) break;
+        }
+        if (!ip) { G[p[0]][p[1]] = '■'; ba++; }
+    }
 }
 
 function render() {
@@ -1492,18 +1494,23 @@ function render() {
             d.className = 'cell';
             d.dataset.r = r;
             d.dataset.c = c;
-            d.textContent = G[r][c];
-            const k = r + ',' + c;
-            if (cm[k]) d.classList.add('found', cm[k]);
 
-            d.addEventListener('mousedown', e => {
-                e.preventDefault();
-                if (done) return;
-                if (!started) startTimer();
-                beginSel(r, c);
-            });
-            d.addEventListener('mouseenter', () => { if (sel) extSel(r, c); });
-            d.addEventListener('mouseup', endSel);
+            if (G[r][c] === '■') {
+                d.classList.add('black');
+            } else {
+                d.textContent = G[r][c];
+                const k = r + ',' + c;
+                if (cm[k]) d.classList.add('found', cm[k]);
+
+                d.addEventListener('mousedown', e => {
+                    e.preventDefault();
+                    if (done) return;
+                    if (!started) startTimer();
+                    beginSel(r, c);
+                });
+                d.addEventListener('mouseenter', () => { if (sel) extSel(r, c); });
+                d.addEventListener('mouseup', endSel);
+            }
 
             gridEl.appendChild(d);
         }
@@ -1519,7 +1526,9 @@ gridEl.addEventListener('touchstart', function (e) {
     if (!started) startTimer();
     const touch = e.touches[0];
     const el = document.elementFromPoint(touch.clientX, touch.clientY);
-    if (!el || !el.classList.contains('cell') || el.classList.contains('faded')) return;
+    if (!el || !el.classList.contains('cell') ||
+        el.classList.contains('black') ||
+        el.classList.contains('faded')) return;
     handleTap(parseInt(el.dataset.r), parseInt(el.dataset.c));
 }, { passive: false });
 gridEl.addEventListener('touchend', e => e.preventDefault(), { passive: false });
@@ -1527,7 +1536,7 @@ gridEl.addEventListener('touchmove', e => e.preventDefault(), { passive: false }
 
 function handleTap(r, c) {
     const cl = gc(r, c);
-    if (!cl || cl.classList.contains('faded')) return;
+    if (!cl || cl.classList.contains('black') || cl.classList.contains('faded')) return;
 
     if (!firstTap) {
         firstTap = { r, c };
@@ -1561,7 +1570,7 @@ function handleTap(r, c) {
             const nr = fr + dir[0] * i, nc = fc2 + dir[1] * i;
             if (nr < 0 || nr >= GS || nc < 0 || nc >= GS) break;
             const c2 = gc(nr, nc);
-            if (c2 && !c2.classList.contains('faded')) {
+            if (c2 && !c2.classList.contains('black') && !c2.classList.contains('faded')) {
                 c2.classList.add('selecting');
                 hl.push({ r: nr, c: nc });
             } else break;
@@ -1646,7 +1655,7 @@ function beginSel(r, c) {
 function extSel(r, c) {
     if (!sel) return;
     const cl = gc(r, c);
-    if (!cl || cl.classList.contains('faded')) return;
+    if (!cl || cl.classList.contains('black') || cl.classList.contains('faded')) return;
     const dr = r - start.r, dc = c - start.c;
     let d = null;
     if (dr === 0 && dc > 0) d = [0, 1];
@@ -1667,7 +1676,7 @@ function extSel(r, c) {
         const nr = start.r + d[0] * i, nc = start.c + d[1] * i;
         if (nr < 0 || nr >= GS || nc < 0 || nc >= GS) break;
         const c2 = gc(nr, nc);
-        if (c2 && !c2.classList.contains('faded')) {
+        if (c2 && !c2.classList.contains('black') && !c2.classList.contains('faded')) {
             c2.classList.add('selecting');
             hl.push({ r: nr, c: nc });
         } else break;
@@ -1962,10 +1971,8 @@ function doReset() {
 
 /* ============================================================
    SAVE AS WORD — FIXED VERSION
-   Uses string concatenation to avoid template literal issues
    ============================================================ */
 function saveAsWord() {
-    // Build table rows with proper escaping
     var rows = '';
     WORDS.forEach(function(wd) {
         var isFound = found.indexOf(wd.w) !== -1 ? '✅ Found' : '⏳ Not found';
@@ -1982,7 +1989,6 @@ function saveAsWord() {
 
     var accuracy = Math.round((16 / Math.max(16 + wrongAttempts, 16)) * 100);
 
-    // Build HTML document as a single string
     var html = '';
     html += '<html xmlns:o="urn:schemas-microsoft-com:office:office" ';
     html += 'xmlns:w="urn:schemas-microsoft-com:office:word" ';
@@ -2009,13 +2015,11 @@ function saveAsWord() {
     html += '</head>';
     html += '<body>';
 
-    // Header
     html += '<div class="header">';
     html += '<h1>BMA4000-20 · Sessions 1 &amp; 2: Key Business Terms</h1>';
     html += '<p>Vocabulary Booster — Foundations of Business Analysis</p>';
     html += '</div>';
 
-    // Results Summary
     html += '<h2>📊 Your Results</h2>';
     html += '<div class="summary">';
     html += '<p><strong>Terms found:</strong> ' + found.length + ' / ' + WORDS.length + '</p>';
@@ -2024,7 +2028,6 @@ function saveAsWord() {
     html += '<p><strong>Accuracy:</strong> ' + accuracy + '%</p>';
     html += '</div>';
 
-    // Glossary Table
     html += '<h2>📖 Your 16 Business Terms — Full Glossary</h2>';
     html += '<table>';
     html += '<tr>';
@@ -2038,7 +2041,6 @@ function saveAsWord() {
     html += rows;
     html += '</table>';
 
-    // Key Takeaways
     html += '<h2>🔑 Key Takeaways</h2>';
     html += '<ul>';
     html += '<li><strong>Frameworks</strong> — PESTLE, MACRO, MESO, MICRO — analyse the environment at every level.</li>';
@@ -2048,7 +2050,6 @@ function saveAsWord() {
     html += '<li>Use these terms in your Integrated Professional Analysis — with <strong>evidence</strong> and <strong>Harvard references</strong>.</li>';
     html += '</ul>';
 
-    // Sources
     html += '<h2>📚 Sources (Harvard Referencing)</h2>';
     html += '<ol>';
     html += '<li>Bath Spa University (2026) <em>BMA4000-20 Module Handbook</em>. Available at: BSU Ultra (Accessed: 15 September 2026).</li>';
@@ -2059,7 +2060,6 @@ function saveAsWord() {
     html += '<li>PESTLE Analysis (2024) <em>PESTLE Analysis Template</em>. Available at: https://pestleanalysis.com (Accessed: 15 September 2026).</li>';
     html += '</ol>';
 
-    // Footer
     html += '<div class="footer">';
     html += 'Designed for Interactive &amp; Sustainable Learning 🌱 | Bath Spa University – Hackney Campus<br>';
     html += 'Module Leader: Mohammed Hbubati | Email: m.hbubati@bathspa.ac.uk';
@@ -2068,7 +2068,6 @@ function saveAsWord() {
     html += '</body>';
     html += '</html>';
 
-    // Create and download the Word document
     try {
         var blob = new Blob(['\ufeff', html], { type: 'application/msword' });
         var url = URL.createObjectURL(blob);
@@ -2087,7 +2086,6 @@ function saveAsWord() {
     }
 }
 
-// Audio system with ambient music
 var audio = {
     on: true,
     ctx: null,
@@ -2149,8 +2147,8 @@ var audio = {
     wrong: function() {
         if (!this.ctx || !this.on) return;
         var n = this.ctx.currentTime;
-        var o = this.ctx.createOscillator();
-        var g = this.ctx.createGain();
+        var o = self.ctx.createOscillator();
+        var g = self.ctx.createGain();
         o.type = 'triangle';
         o.frequency.setValueAtTime(250, n);
         o.frequency.exponentialRampToValueAtTime(150, n + 0.2);
@@ -2270,7 +2268,7 @@ $('resetOverlay').addEventListener('click', function(e) {
 
 genGrid();
 render();
-console.log('✅ BMA4000-20 Sessions 1 & 2 Vocabulary Word Search loaded — 16 terms across 4 themes: Frameworks, Environment, Stakeholders, Value.');
+console.log('✅ BMA4000-20 Sessions 1 & 2 Vocabulary Word Search loaded — with black box spacers (5.5% density).');
 </script>
 </body>
 </html>
